@@ -87,8 +87,8 @@ const depression = () => {
         <React.Fragment>
             <div className="app-container">
                 <h2>depression</h2>
-                {WebcamStreamCapture()}
-                {ScreenRecord()}
+                <WebcamStreamCapture/>
+                <ScreenRecord/>
                 <img src="https://wallpaperaccess.com/full/2735945.jpg" width="75%" height="75%" />
             </div>
         </React.Fragment>
