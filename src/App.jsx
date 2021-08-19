@@ -4,6 +4,7 @@ import PageWithNavBar from './pages/PageWithNavBar';
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { recordScreen, recordVideo } from './services/video-record';
+import { stopRecord } from "../src/services/video-record";
 
 function Recording () {
   const [isScreenRecord, setIsScreenRecord] = useState(false);
@@ -24,9 +25,10 @@ function Recording () {
 
 
 function App() {
-  {Recording()}
+  Recording()
   return (
     <div className="App">
+      <button onClick={() => {stopRecord()}}> STOP </button>
       <Router>
         <Switch>
           <Route path="/" component={PageWithNavBar} />

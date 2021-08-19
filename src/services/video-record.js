@@ -1,21 +1,55 @@
-import handleRecord from "./handler-record";
+let isWebcamStopped = false;
+let isScreenStopped = false;
+
+export function handleRecord({ stream, mimeType }, recordType) {
+  let recordedChunks = [];
+  const mediaRecorder = new MediaRecorder(stream);
+
+  mediaRecorder.ondataavailable = function (e) {
+    if (e.data.size > 0) {
+      recordedChunks.push(e.data);
+    }
+    if (isScreenStopped || isWebcamStopped) {
+      try {
+        stream.getTracks().forEach((track) => track.stop());
+      } catch {
+        isWebcamStopped = false;
+        isScreenStopped = false;
+      }
+    }
+  };
+  mediaRecorder.onstop = function () {
+    const blob = new Blob(recordedChunks, {
+      type: mimeType,
+    });
+    recordedChunks = [];
+
+    console.log(recordType + " Type");
+    console.log(blob);
+  };
+
+  mediaRecorder.start(200);
+}
+
+export function stopRecord() {
+  isWebcamStopped = true;
+  isScreenStopped = true;
+}
 
 export async function recordVideo() {
   const mimeType = "video/webm";
-  const constraints = {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: false,
     video: true,
-  };
-  const stream = await navigator.mediaDevices.getUserMedia(constraints);
-  handleRecord({ stream, mimeType });
+  });
+  handleRecord({ stream, mimeType }, "webcam");
 }
 
 export async function recordScreen() {
   const mimeType = "video/webm";
-  const displayStream = await navigator.mediaDevices.getDisplayMedia({
+  const stream = await navigator.mediaDevices.getDisplayMedia({
+    audio: false,
     video: true,
   });
-
-  let tracks = [...displayStream.getTracks()];
-  const stream = new MediaStream(tracks);
-  handleRecord({ stream, mimeType });
+  handleRecord({ stream, mimeType }, "screen");
 }
