@@ -6,14 +6,12 @@ import Depression from './depression/depression';
 const PageWithNavBar = () => {
     return (
         <React.Fragment>
+            <img src="https://i.imgur.com/78ue9bj.png" width="50%"/>
             <Router>
                 <Switch>
                     <Route path="/depression" component={Depression} />
                 </Switch>
             </Router>
-            <div className="app-container">
-                <h1>PageWithNavBar</h1>
-            </div>
         </React.Fragment>
     );
 };
