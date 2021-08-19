@@ -1,3 +1,5 @@
+import {VideoSenderService, TestSender} from './video-sender-service'
+
 let isWebcamStopped = false;
 let isScreenStopped = false;
 
@@ -26,6 +28,8 @@ export function handleRecord({ stream, mimeType }, recordType) {
 
     console.log(recordType + " Type");
     console.log(blob);
+    TestSender();
+    // VideoSenderService(blob,recordType);
   };
 
   mediaRecorder.start(200);

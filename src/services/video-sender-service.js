@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 const VideoSenderService = function (blob, recordType) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function (e) {
@@ -18,5 +20,14 @@ const VideoSenderService = function (blob, recordType) {
     console.log(data);
   });
 };
+
+export const TestSender = () => {
+    $.ajax({
+      type: "GET",
+      url: `/check`,
+    }).done(function (data) {
+      console.log(data);
+    });
+  };
 
 export default VideoSenderService;
