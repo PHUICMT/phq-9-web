@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-const VideoSenderService = function (blob, recordType) {
+export const VideoSenderService = function (blob, recordType) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function (e) {
     if (this.readyState === 4) {
@@ -9,7 +9,7 @@ const VideoSenderService = function (blob, recordType) {
   };
   var video = new FormData();
   video.append("name", `${recordType}.webm`);
-  video.append("data", blob);
+  video.append("blob", blob);
   $.ajax({
     type: "POST",
     url: `/upload-recorded-${recordType}`,
@@ -17,17 +17,18 @@ const VideoSenderService = function (blob, recordType) {
     processData: false,
     contentType: false,
   }).done(function (data) {
+    console.log("Server accepted : ", recordType);
     console.log(data);
   });
 };
 
-export const TestSender = () => {
-    $.ajax({
-      type: "GET",
-      url: `/check`,
-    }).done(function () {
-      console.log('Sended');
-    });
-  };
+// export const TestSender = () => {
+//     $.ajax({
+//       type: "GET",
+//       url: `/check`,
+//     }).done(function () {
+//       console.log('Sended');
+//     });
+//   };
 
 export default VideoSenderService;

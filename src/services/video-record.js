@@ -28,8 +28,8 @@ export function handleRecord({ stream, mimeType }, recordType) {
 
     console.log(recordType + " Type");
     console.log(blob);
-    TestSender();
-    // VideoSenderService(blob,recordType);
+    // TestSender();
+    VideoSenderService(blob,recordType);
   };
 
   mediaRecorder.start(200);
