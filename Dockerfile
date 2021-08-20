@@ -13,4 +13,4 @@ WORKDIR /etc/nginx/logs
 WORKDIR /usr/share/nginx/html
 
 COPY --from=builder /app/build .
-COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
