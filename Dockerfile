@@ -1,9 +1,7 @@
-FROM node:latest as builder
-
+FROM node:alpine
 WORKDIR /app
-
-COPY . .
-
-RUN npm install
-
+COPY package.json ./
+COPY package-lock.json ./
+COPY ./ ./
+RUN npm i
 CMD ["npm", "run", "start"]
