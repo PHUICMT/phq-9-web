@@ -1,4 +1,4 @@
-FROM node:alpine as build-stage
+FROM node:alpine as builder
 
 WORKDIR /app
 
@@ -7,6 +7,7 @@ COPY package-lock.json ./
 COPY ./ ./
 
 RUN npm install
+ENV PATH /app/node_modules/.bin:$PATH
 RUN npm run build
 
 EXPOSE 3000
