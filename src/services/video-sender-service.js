@@ -25,8 +25,8 @@ export const TestSender = () => {
     $.ajax({
       type: "GET",
       url: `/check`,
-    }).done(function (data) {
-      console.log(data);
+    }).done(function () {
+      console.log('Sended');
     });
   };
 
