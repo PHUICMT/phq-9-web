@@ -1,16 +1,11 @@
-FROM node:alpine as builder
+FROM node:14.16.0-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
-COPY ./ ./
-
+COPY . ./
 RUN npm install
 ENV PATH /app/node_modules/.bin:$PATH
 RUN npm run build
-
-EXPOSE 3000
 
 FROM nginx:stable-alpine
 
