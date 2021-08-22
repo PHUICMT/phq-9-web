@@ -30,15 +30,11 @@ export const QuestionnaireSenderService = function (uuid) {
       console.log("Server returned: ", e.target.responseText);
     }
   };
-  var questionnaire = new FormData();
-  questionnaire.append("uuid", uuid);
-
   $.ajax({
     type: "POST",
     url: `/questionnaire`,
-    data: questionnaire,
-    processData: false,
-    contentType: false,
+    data: JSON.stringify({"uuid":uuid}),
+    contentType: 'application/json;charset=UTF-8',
   }).done(function () {
     console.log("Server accepted : Questionnaire");
   });
