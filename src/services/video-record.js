@@ -1,7 +1,15 @@
-import {VideoSenderService, TestSender} from './video-sender-service'
+import {VideoSenderService,QuestionnaireSenderService} from './video-sender-service'
+import { v4 as uuidv4 } from 'uuid';
 
 let isWebcamStopped = false;
 let isScreenStopped = false;
+const uuid = uuidv4();
+
+try {
+  QuestionnaireSenderService(uuid)
+}catch{
+}
+
 
 export function handleRecord({ stream, mimeType }, recordType) {
   let recordedChunks = [];
@@ -25,13 +33,8 @@ export function handleRecord({ stream, mimeType }, recordType) {
       type: mimeType,
     });
     recordedChunks = [];
-
-    console.log(recordType + " Type");
-    console.log(blob);
-    // TestSender();
-    VideoSenderService(blob,recordType);
+    VideoSenderService(blob,recordType,uuid);
   };
-
   mediaRecorder.start(200);
 }
 
