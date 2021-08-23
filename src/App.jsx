@@ -24,10 +24,10 @@ function Recording () {
 
 
 function App() {
-  Recording()
+  // Recording()
   return (
     <div className="App">
-      <button onClick={() => {stopRecord()}}> STOP </button>
+      {/* <button onClick={() => {stopRecord()}}> STOP </button> */}
       <Router>
         <Switch>
           <Route path="/" component={PageWithNavBar} />
