@@ -8,9 +8,9 @@ export const VideoSenderService = function (blob, recordType, uuid) {
     }
   };
   var video = new FormData();
-  video.append("name", `${recordType}.webm`);
   video.append("uuid", uuid);
   video.append("blob", blob);
+
   $.ajax({
     type: "POST",
     url: `/upload-recorded-${recordType}`,
