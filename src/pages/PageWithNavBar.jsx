@@ -1,14 +1,16 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import Header from "../components/header/header"
 import HeaderWithIcon from "../components/header-with-icon/header-with-icon";
-import Nuvbar from "../components/header/header"
+import AcceptCard from "../components/accept-card/accept-card"
 
 const PageWithNavBar = () => {
     return (
         <React.Fragment>
-            <Nuvbar/>
+            <Header/>
             <HeaderWithIcon/>
+            <AcceptCard/>
 
             <Router>
                 <Switch>

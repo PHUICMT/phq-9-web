@@ -1,8 +1,33 @@
 .header-with-icon {
+  width: 100%;
+
+  .header-bg {
+    top: 80px;
+    position: relative;
+    background-image: url("../../assets/icons/header-bg.svg"),
+      url("../../assets/icons/header.svg");
+    background-repeat: no-repeat;
+    background-position: top right, top right;
+    background-size: 90%, 40%;
+    height: 700px;
+    margin-bottom: -180px;
+  }
+}
+
+.title-box {
   position: absolute;
-  width: 1440px;
-  height: 719.05px;
-  top: 0px;
-  background-image: "../../assets/icons/header.svg";
-  background-repeat: no-repeat;
+  width: 770px;
+  top: 142px;
+  color: #5c5c5c;
+  font-family: "Prompt", sans-serif;
+  font-weight: 500;
+
+  .title-1 {
+    font-size: 96px;
+  }
+  .title-2 {
+    font-size: 64px;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
