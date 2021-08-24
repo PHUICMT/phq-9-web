@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Header from "../components/header/header"
 import HeaderWithIcon from "../components/header-with-icon/header-with-icon";
 import AcceptCard from "../components/accept-card/accept-card"
+import AcceptToggle from "../components/accept-toggle/accept-toggle"
 
 const PageWithNavBar = () => {
     return (
@@ -11,6 +12,7 @@ const PageWithNavBar = () => {
             <Header/>
             <HeaderWithIcon/>
             <AcceptCard/>
+            <AcceptToggle/>
 
             <Router>
                 <Switch>
