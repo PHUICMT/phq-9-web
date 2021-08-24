@@ -1,9 +1,10 @@
 import React from 'react';
 import { Container, Navbar, Form, Dropdown } from 'react-bulma-components';
+import "./header.scss"
 
-const NavBar = () => {
+const Header = () => {
     return (
-        <div className="navbar"/>
+        <div className="header"/>
     );
 };
 
