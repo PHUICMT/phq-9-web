@@ -1,11 +1,15 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import HeaderWithIcon from "../components/header-with-icon/header-with-icon";
+import Nuvbar from "../components/navbar/nuvbar"
 
 const PageWithNavBar = () => {
     return (
         <React.Fragment>
-            <img alt="header" src="https://i.imgur.com/78ue9bj.png" width="50%"/>
+            <Nuvbar/>
+            <HeaderWithIcon/>
+
             <Router>
                 <Switch>
                     <Route path="/phq-9" component={null} />
