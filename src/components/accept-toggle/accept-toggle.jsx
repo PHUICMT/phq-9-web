@@ -7,6 +7,7 @@ import ScreenDeActive from "../../assets/icons/screen-deactive.svg"
 import { React, useState } from 'react';
 import { Container } from 'react-bulma-components';
 import Toggle from 'react-toggle'
+import Button from '@material-ui/core/Button';
 
 const AcceptToggle = () => {
     const [webcamToggleAllows, setWebcamToggleAllows] = useState(true);
@@ -23,7 +24,7 @@ const AcceptToggle = () => {
                         onChange={() => setWebcamToggleAllows(!webcamToggleAllows)}
                     />
                     <h>เข้าถึงกล้อง Webcam และบันทึกวิดีโอ</h>
-                    <img src={webcamToggleAllows ? WebcamActive : WebcamDeActive}/>
+                    <img src={webcamToggleAllows ? WebcamActive : WebcamDeActive} />
                 </div>
 
                 <div className="accept-toggle-box">
@@ -33,8 +34,15 @@ const AcceptToggle = () => {
                         onChange={() => setScreenToggleAllows(!screenToggleAllows)}
                     />
                     <h>บันทึกวิดีโอหน้าจอ</h>
-                    <img src={screenToggleAllows ? ScreenActive : ScreenDeActive}/>
+                    <img src={screenToggleAllows ? ScreenActive : ScreenDeActive} />
                 </div>
+            </div>
+
+            <div>
+                <Button
+                    variant="contained"
+                    size="large"
+                    className="submit-button">ยืนยัน</Button>
             </div>
         </Container>
     );
