@@ -23,7 +23,7 @@ const AcceptToggle = () => {
                         onChange={() => setWebcamToggleAllows(!webcamToggleAllows)}
                     />
                     <h>เข้าถึงกล้อง Webcam และบันทึกวิดีโอ</h>
-                    <img src={WebcamActive}/>
+                    <img src={webcamToggleAllows ? WebcamActive : WebcamDeActive}/>
                 </div>
 
                 <div className="accept-toggle-box">
@@ -33,7 +33,7 @@ const AcceptToggle = () => {
                         onChange={() => setScreenToggleAllows(!screenToggleAllows)}
                     />
                     <h>บันทึกวิดีโอหน้าจอ</h>
-                    <img src={ScreenActive}/>
+                    <img src={screenToggleAllows ? ScreenActive : ScreenDeActive}/>
                 </div>
             </div>
         </Container>
