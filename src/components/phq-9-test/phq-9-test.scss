@@ -14,6 +14,7 @@
   display: grid;
   position: absolute;
   justify-content: center;
+  justify-items: center;
   width: 100%;
 
   .test-component {
@@ -30,8 +31,14 @@
     &._0 {
       background-color: rgba(250, 235, 215, 0.5);
     }
+    &._0:hover {
+      background-color: rgba(250, 235, 215, 1);
+    }
     &._1 {
       background-color: rgba(215, 250, 241, 0.5);
+    }
+    &._1:hover {
+      background-color: rgba(215, 250, 241, 1);
     }
 
     h {

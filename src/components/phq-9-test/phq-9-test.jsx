@@ -1,5 +1,6 @@
 import "./phq-9-test.scss";
 import IndexBox from '../../assets/icons/index-box.svg'
+import Result from '../result/result'
 
 import { useState } from "react";
 import { Container } from 'react-bulma-components';
@@ -10,6 +11,8 @@ import update from 'react-addons-update';
 
 const PHQTestComponent = () => {
     const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const [isResultSubmit, setIsResultSubmit] = useState(false);
+    const [totalScore, setTotalScore] = useState();
 
     const PHQSlider = withStyles({
         root: {
@@ -42,7 +45,8 @@ const PHQTestComponent = () => {
         },
         markLabelActive: {
             color: '#6C5CE7',
-        }
+        },
+        active: {}
     })(Slider);
 
     const marks = [
@@ -78,7 +82,6 @@ const PHQTestComponent = () => {
         const [value, setValue] = useState(0);
         const handleSliderChange = (event, newValue) => {
             setValue(newValue);
-
             const tmp_totalValue = update(totalValues, { [index - 1]: { $set: newValue } });
             setTotalValues(tmp_totalValue);
         };
@@ -104,6 +107,12 @@ const PHQTestComponent = () => {
         );
     }
 
+    function handleOnSubmit() {
+        const sum = totalValues.reduce((result, number) => result + number);
+        setTotalScore(sum);
+        setIsResultSubmit(true);
+    }
+
     return (
         <Container className="test-container">
             {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
@@ -115,11 +124,15 @@ const PHQTestComponent = () => {
             {TestComp(7, "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานท่ีต้องใช้ความตั้งใจ")}
             {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
             {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
-            {console.log(totalValues)}
             <Button
                 variant="contained"
                 size="large"
-                className="submit-button">ส่งคำตอบ</Button>
+                className="submit-button"
+                onClick={() => handleOnSubmit()}
+                >ส่งคำตอบ</Button>
+
+            {isResultSubmit ? <Result score={totalScore} /> : <></>}
+
         </Container>
     );
 };
