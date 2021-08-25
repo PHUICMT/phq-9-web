@@ -14,14 +14,14 @@
   top: 850px;
   display: grid;
   justify-content: center;
-  justify-items: start;
   align-content: space-around;
 
   .accept-toggle-box {
     display: grid;
-    grid-template-columns: 120px auto;
+    grid-template-columns: 120px 420px auto;
 
     h {
+      text-align: left;
       padding-left: 20px;
       display: grid;
       align-items: center;
@@ -31,13 +31,14 @@
 
 .react-toggle {
   touch-action: pan-x;
-
   display: inline-block;
   position: relative;
   cursor: pointer;
   background-color: transparent;
   border: 0;
   padding: 0;
+  margin-top: auto;
+  margin-bottom: auto;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -76,6 +77,8 @@
 .react-toggle-track {
   width: 120px;
   height: 50px;
+  margin-top: auto;
+  margin-bottom: auto;
   padding: 0;
   border-radius: 30px;
   background-color: #cfcfcf9e;

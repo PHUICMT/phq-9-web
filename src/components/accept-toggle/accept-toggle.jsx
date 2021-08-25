@@ -1,6 +1,10 @@
 import "./accept-toggle.scss";
+import WebcamActive from "../../assets/icons/video-active.svg"
+import WebcamDeActive from "../../assets/icons/video-deactive.svg"
+import ScreenActive from "../../assets/icons/screen-active.svg"
+import ScreenDeActive from "../../assets/icons/screen-deactive.svg"
 
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import { Container } from 'react-bulma-components';
 import Toggle from 'react-toggle'
 
@@ -19,6 +23,7 @@ const AcceptToggle = () => {
                         onChange={() => setWebcamToggleAllows(!webcamToggleAllows)}
                     />
                     <h>เข้าถึงกล้อง Webcam และบันทึกวิดีโอ</h>
+                    <img src={WebcamActive}/>
                 </div>
 
                 <div className="accept-toggle-box">
@@ -28,6 +33,7 @@ const AcceptToggle = () => {
                         onChange={() => setScreenToggleAllows(!screenToggleAllows)}
                     />
                     <h>บันทึกวิดีโอหน้าจอ</h>
+                    <img src={ScreenActive}/>
                 </div>
             </div>
         </Container>
