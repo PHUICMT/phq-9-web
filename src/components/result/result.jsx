@@ -2,7 +2,8 @@ import "./result.scss";
 import Download from '../../assets/icons/download-icon.svg'
 import Retry from '../../assets/icons/retry.svg'
 
-import { useState } from 'react';
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver';
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
 
@@ -31,12 +32,21 @@ function Result(props) {
         color: result['color']
     };
     const resultStyleBorderColor = {
-        backgroundColor: result['color']+'1c',
+        backgroundColor: result['color'] + '1c',
     };
+
+    function handleOnSaveResult() {
+        var container = document.getElementById('result-card-container');
+        container.style.backgroundColor = "#FFFF";
+        domtoimage.toBlob(container)
+            .then(function (blob) {
+                saveAs(blob, '[PHQ-9]Result.png');
+            });
+    }
 
 
     return (
-        <Container className="result-card-container">
+        <Container className="result-card-container" id="result-card-container">
             <div className="result-card" style={resultStyleBorderColor}>
                 <div className="result-textgroup">
                     <div className="result-card-text">
@@ -51,6 +61,7 @@ function Result(props) {
 
                 <div className="button-group-container">
                     <Button
+                        onClick={() => handleOnSaveResult()}
                         variant="contained"
                         size="large"
                         className="submit-button"><img src={Download} />บันทึกผลการทดสอบ
