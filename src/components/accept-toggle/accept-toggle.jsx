@@ -10,23 +10,25 @@ const AcceptToggle = () => {
 
 
     return (
-        <Container>
-            <div className="">
-                <Toggle
-                    defaultChecked={webcamToggleAllows}
-                    className="custom-react-toggle"
-                    onChange={() => setWebcamToggleAllows(!webcamToggleAllows)}
-                />
+        <Container className="container-box">
+            <div className="accept-toggle-container">
+                <div className="accept-toggle-box">
+                    <Toggle
+                        defaultChecked={webcamToggleAllows}
+                        className="custom-react-toggle"
+                        onChange={() => setWebcamToggleAllows(!webcamToggleAllows)}
+                    />
+                    <h>เข้าถึงกล้อง Webcam และบันทึกวิดีโอ</h>
+                </div>
 
-            </div>
-
-            <div className="">
-                <Toggle
-                    defaultChecked={screenToggleAllows}
-                    className="custom-react-toggle"
-                    onChange={() => setScreenToggleAllows(!screenToggleAllows)}
-                />
-
+                <div className="accept-toggle-box">
+                    <Toggle
+                        defaultChecked={screenToggleAllows}
+                        className="custom-react-toggle"
+                        onChange={() => setScreenToggleAllows(!screenToggleAllows)}
+                    />
+                    <h>บันทึกวิดีโอหน้าจอ</h>
+                </div>
             </div>
         </Container>
     );
