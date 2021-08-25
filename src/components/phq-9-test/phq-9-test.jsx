@@ -8,6 +8,8 @@ import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 
 const PHQTestComponent = () => {
+    const [totalValues, setTotalValues] = useState([0,0,0,0])
+
     const PHQSlider = withStyles({
         root: {
             color: '#6C5CE7',
@@ -109,7 +111,7 @@ const PHQTestComponent = () => {
             {TestComp(7, "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานท่ีต้องใช้ความตั้งใจ")}
             {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
             {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
-
+            {console.log(totalValues)}
             <Button
                 variant="contained"
                 size="large"
