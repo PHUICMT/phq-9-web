@@ -1,0 +1,43 @@
+.phq-title-card {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  width: 1170px;
+  height: 261px;
+  background-color: rgba(255, 255, 255, 0.7);
+  filter: drop-shadow(3px 8px 13px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
+  padding: 20px;
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: 750px auto;
+
+  text-align: left;
+  b {
+    color: #6c5ce7;
+    font-weight: bold;
+  }
+  .title {
+    color: #6c5ce7;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 48px;
+  }
+  .rules {
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 40px;
+
+    color: #00b894;
+  }
+  .detail {
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 80px;
+
+    color: #5c5c5c;
+  }
+}
