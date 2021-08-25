@@ -6,9 +6,10 @@ import { Container } from 'react-bulma-components';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
+import update from 'react-addons-update';
 
 const PHQTestComponent = () => {
-    const [totalValues, setTotalValues] = useState([0,0,0,0])
+    const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     const PHQSlider = withStyles({
         root: {
@@ -77,6 +78,9 @@ const PHQTestComponent = () => {
         const [value, setValue] = useState(0);
         const handleSliderChange = (event, newValue) => {
             setValue(newValue);
+
+            const tmp_totalValue = update(totalValues, { [index - 1]: { $set: newValue } });
+            setTotalValues(tmp_totalValue);
         };
         var className = index % 2;
         return (
