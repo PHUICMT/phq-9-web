@@ -19,8 +19,9 @@ const PHQTestComponent = () => {
     const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
-
+    const [dataFromBackend, setDataFromBackend] = useState(null);
     const allowsRecord = useState(location.state)[0];
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
@@ -136,11 +137,18 @@ const PHQTestComponent = () => {
         );
     }
 
-    function handleOnSubmit() {
+    async function handleOnSubmit() {
         const sum = totalValues.reduce((result, number) => result + number);
         setTotalScore(sum);
-        stopRecord(totalValues,null);
+        stopRecord(totalValues, null);
         setIsResultSubmit(true);
+        if (allowsRecord['webcamToggleAllows']) {
+            while (dataFromBackend == null) {
+                setDataFromBackend(await window.localStorage.getItem("data"));
+                console.log(dataFromBackend);
+                window.localStorage.clear();
+            }
+        }
         handleScrollToResult();
     }
 
@@ -157,7 +165,6 @@ const PHQTestComponent = () => {
             } catch {
             }
         }
-
     }
 
     return (
@@ -175,7 +182,7 @@ const PHQTestComponent = () => {
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
 
-                {isResultSubmit ? <Result score={totalScore} /> : <Button
+                {isResultSubmit ? <Result score={totalScore} data={dataFromBackend} /> : <Button
                     variant="contained"
                     size="large"
                     className="submit-button"

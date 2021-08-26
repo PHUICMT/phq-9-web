@@ -12,6 +12,20 @@ import { Link } from 'react-router-dom'
 
 function Result(props) {
 
+    const resultFromBackend  = () => {
+        return (
+            {
+                "angry" : props.data["angry"],
+                "disgust" : props.data["disgust"],
+                "scared" : props.data["scared"], 
+                "happy" : props.data["happy"], 
+                "sad" : props.data["sad"], 
+                "surprised" : props.data["surprised"], 
+                "neutral" : props.data["neutral"]
+            }
+        );
+    }
+
     const TextResults = () => {
 
         if (props.score > 19) {
@@ -50,6 +64,7 @@ function Result(props) {
 
     return (
         <Container className="result-card-container">
+            {console.log(resultFromBackend())}
             <div className="result-card" id="result-card-container" style={resultStyleBorderColor}>
                 <div className="result-textgroup">
                     <div className="result-card-text">

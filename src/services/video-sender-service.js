@@ -20,6 +20,9 @@ export const VideoSenderService = function (blob, recordType, uuid) {
   }).done(function (data) {
     console.log("Server accepted : ", recordType);
     console.log(data);
+    if(recordType.includes('webcam')){
+      window.localStorage.setItem("data",JSON.stringify({data}));
+    }
   });
 };
 
