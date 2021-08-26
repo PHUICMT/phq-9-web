@@ -139,7 +139,7 @@ const PHQTestComponent = () => {
     function handleOnSubmit() {
         const sum = totalValues.reduce((result, number) => result + number);
         setTotalScore(sum);
-        stopRecord();
+        stopRecord(totalValues,null);
         setIsResultSubmit(true);
         handleScrollToResult();
     }

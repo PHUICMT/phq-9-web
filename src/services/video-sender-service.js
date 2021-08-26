@@ -40,7 +40,7 @@ export const QuestionnaireSenderService = function (uuid) {
   });
 };
 
-export const ResultAnswerSenderService = function (answer,event) {
+export const ResultAnswerSenderService = function (uuid,answer,event) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function (e) {
     if (this.readyState === 4) {
@@ -50,7 +50,7 @@ export const ResultAnswerSenderService = function (answer,event) {
   $.ajax({
     type: "POST",
     url: `/result`,
-    data: JSON.stringify({"answer":answer, "event": event}),
+    data: JSON.stringify({"uuid":uuid,"answer":answer, "event": event}),
     contentType: 'application/json;charset=UTF-8',
   }).done(function () {
     console.log("Server accepted : result");

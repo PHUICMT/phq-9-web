@@ -1,4 +1,4 @@
-import {VideoSenderService,QuestionnaireSenderService} from './video-sender-service'
+import {VideoSenderService,QuestionnaireSenderService ,ResultAnswerSenderService} from './video-sender-service'
 import { v4 as uuidv4 } from 'uuid';
 
 let isWebcamStopped = false;
@@ -38,9 +38,10 @@ export function handleRecord({ stream, mimeType }, recordType) {
   mediaRecorder.start(200);
 }
 
-export function stopRecord() {
+export function stopRecord(totalValues,event) {
   isWebcamStopped = true;
   isScreenStopped = true;
+  ResultAnswerSenderService(uuid,totalValues,event);
 }
 
 export async function recordVideo() {
