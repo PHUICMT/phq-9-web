@@ -40,4 +40,21 @@ export const QuestionnaireSenderService = function (uuid) {
   });
 };
 
+export const ResultAnswerSenderService = function (answer,event) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function (e) {
+    if (this.readyState === 4) {
+      console.log("Server returned: ", e.target.responseText);
+    }
+  };
+  $.ajax({
+    type: "POST",
+    url: `/result`,
+    data: JSON.stringify({"answer":answer, "event": event}),
+    contentType: 'application/json;charset=UTF-8',
+  }).done(function () {
+    console.log("Server accepted : result");
+  });
+};
+
 export default VideoSenderService;
