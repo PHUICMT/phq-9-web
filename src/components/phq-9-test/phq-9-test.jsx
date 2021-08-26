@@ -139,6 +139,7 @@ const PHQTestComponent = () => {
     function handleOnSubmit() {
         const sum = totalValues.reduce((result, number) => result + number);
         setTotalScore(sum);
+        stopRecord();
         setIsResultSubmit(true);
         handleScrollToResult();
     }
@@ -161,6 +162,7 @@ const PHQTestComponent = () => {
 
     return (
         <div>
+            {Recording()}
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
