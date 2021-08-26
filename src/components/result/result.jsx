@@ -6,6 +6,7 @@ import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom'
 
 
 
@@ -41,16 +42,18 @@ function Result(props) {
         domtoimage.toBlob(container)
             .then(function (blob) {
                 saveAs(blob, '[PHQ-9]Result.png');
+            }).finally(function () {
+                container.style.backgroundColor = result['color'] + '1c';
             });
     }
 
 
     return (
-        <Container className="result-card-container" id="result-card-container">
-            <div className="result-card" style={resultStyleBorderColor}>
+        <Container className="result-card-container">
+            <div className="result-card" id="result-card-container" style={resultStyleBorderColor}>
                 <div className="result-textgroup">
                     <div className="result-card-text">
-                        <div className="result-card-text title-1">ผลการทดสอบ</div>
+                        <div className="result-card-text title-1">ผลการทดสอบ<br /><p style={resultStyleColor}> {props.score} คะแนน</p></div>
                         <div className="result-card-text result-text" style={resultStyleColor}>{result['result']}</div>
                         <div className="result-card-text title-info">ข้อแนะนำการดูแล</div>
                         <div className="result-card-text info-text">{result['info']}</div>
@@ -68,6 +71,8 @@ function Result(props) {
                     </Button>
 
                     <Button
+                        component={Link}
+                        to={'/index'}
                         variant="contained"
                         size="large"
                         className="retry-button"><img src={Retry} />ทำแบบทดสอบอีกครั้ง

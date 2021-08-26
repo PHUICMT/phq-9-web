@@ -1,11 +1,15 @@
 import "./App.scss";
+
 import { useState, useEffect } from "react";
-import PageWithNavBar from './pages/PageWithNavBar';
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, DefaultRoute } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { recordScreen, recordVideo, stopRecord } from './services/video-record';
 
-function Recording () {
+import MainPage from './pages/MainPage';
+import Header from "./components/header/header"
+import PHQTestComponent from './components/phq-9-test/phq-9-test'
+
+function Recording() {
   const [isScreenRecord, setIsScreenRecord] = useState(false);
   const [isVideoRecord, setIsVideoRecord] = useState(false);
 
@@ -22,15 +26,21 @@ function Recording () {
   }, [isScreenRecord, isVideoRecord]);
 };
 
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+}
 
 function App() {
   // Recording()
   return (
     <div className="App">
-      {/* <button onClick={() => {stopRecord()}}> STOP </button> */}
+
+      <Header />
       <Router>
         <Switch>
-          <Route path="/" component={PageWithNavBar} />
+          {/* <Route path="/" component={MainPage} /> */}
+          <Route path="/index" component={MainPage} />
+          <Route path="/phq-9" component={PHQTestComponent} />
         </Switch>
       </Router>
     </div>

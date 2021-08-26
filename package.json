@@ -2,6 +2,7 @@
   "name": "phq-9-web",
   "version": "0.1.0",
   "proxy": "http://server:5000",
+  "homepage": "/index",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",

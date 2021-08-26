@@ -8,17 +8,21 @@ import { React, useState } from 'react';
 import { Container } from 'react-bulma-components';
 import Toggle from 'react-toggle'
 import Button from '@material-ui/core/Button';
+import { useHistory } from "react-router-dom";
 
-import PHQTitleCard from '../phq-9-title-card/phq-9-title-card'
-import PHQTestComponent from '../phq-9-test/phq-9-test'
+import AcceptCard from "../../components/accept-card/accept-card"
 
 const AcceptToggle = () => {
     const [webcamToggleAllows, setWebcamToggleAllows] = useState(true);
     const [screenToggleAllows, setScreenToggleAllows] = useState(true);
+    let history = useHistory();
 
+    const handleSubmited = () => {
+        history.push("/phq-9");
+    }
 
-    return (
-        <Container>
+    const AcceptForm = () => {
+        return (
             <Container className="container-box">
                 <div className="accept-toggle-container">
                     <div className="accept-toggle-box">
@@ -44,14 +48,19 @@ const AcceptToggle = () => {
 
                 <div>
                     <Button
+                        onClick={() => handleSubmited()}
                         variant="contained"
                         size="large"
                         className="submit-button">ยืนยัน</Button>
                 </div>
             </Container>
+        );
+    }
 
-            <PHQTitleCard/>
-            <PHQTestComponent/>
+    return (
+        <Container>
+            <AcceptCard />
+            <AcceptForm />
         </Container>
     );
 };
