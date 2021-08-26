@@ -18,7 +18,10 @@ const AcceptToggle = () => {
     let history = useHistory();
 
     const handleSubmited = () => {
-        history.push("/phq-9");
+        history.push({
+            pathname: '/phq-9',
+            state: { webcamToggleAllows, screenToggleAllows },
+        });
     }
 
     const AcceptForm = () => {

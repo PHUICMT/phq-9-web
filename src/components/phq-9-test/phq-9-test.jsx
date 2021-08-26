@@ -2,8 +2,9 @@ import "./phq-9-test.scss";
 import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
+import { recordScreen, recordVideo, stopRecord } from '../../services/video-record';
 
-import { useState, useEffect, useHistory } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { Container } from 'react-bulma-components';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,11 +15,12 @@ import update from 'react-addons-update';
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
 
 const PHQTestComponent = () => {
+    const location = useLocation();
     const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
 
-    const location = useLocation();
+    const allowsRecord = useState(location.state)[0];
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
@@ -86,6 +88,23 @@ const PHQTestComponent = () => {
         );
 
     }
+
+    function Recording() {
+        const [isScreenRecord, setIsScreenRecord] = useState(false);
+        const [isVideoRecord, setIsVideoRecord] = useState(false);
+
+        useEffect(() => {
+            if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
+                setIsScreenRecord(true);
+                recordScreen();
+            }
+
+            if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
+                setIsVideoRecord(true);
+                recordVideo();
+            }
+        }, [isScreenRecord, isVideoRecord]);
+    };
 
 
     const TestComp = (index, text) => {

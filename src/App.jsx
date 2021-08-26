@@ -1,13 +1,13 @@
 import "./App.scss";
 
 import { useState, useEffect } from "react";
-import { Route, Switch, DefaultRoute } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { recordScreen, recordVideo, stopRecord } from './services/video-record';
 
 import MainPage from './pages/MainPage';
-import Header from "./components/header/header"
-import PHQTestComponent from './components/phq-9-test/phq-9-test'
+import Header from "./components/header/header";
+import PHQTestComponent from './components/phq-9-test/phq-9-test';
 
 function Recording() {
   const [isScreenRecord, setIsScreenRecord] = useState(false);
@@ -34,13 +34,14 @@ function App() {
   // Recording()
   return (
     <div className="App">
-
-      <Header />
       <Router>
+        <Route path="/" component={Header} />
         <Switch>
-          {/* <Route path="/" component={MainPage} /> */}
           <Route path="/index" component={MainPage} />
           <Route path="/phq-9" component={PHQTestComponent} />
+          <Route path='*' exact >
+            <Redirect from='*' to='/index' />
+          </Route>
         </Switch>
       </Router>
     </div>
