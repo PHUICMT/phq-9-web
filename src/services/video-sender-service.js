@@ -20,8 +20,8 @@ export const VideoSenderService = function (blob, recordType, uuid) {
   }).done(function (data) {
     console.log("Server accepted : ", recordType);
     console.log(data);
-    if(recordType.includes('webcam')){
-      window.localStorage.setItem("data",JSON.stringify({data}));
+    if (recordType.includes("webcam")) {
+      window.localStorage.setItem("data", JSON.stringify({ data }));
     }
   });
 };
@@ -36,14 +36,14 @@ export const QuestionnaireSenderService = function (uuid) {
   $.ajax({
     type: "POST",
     url: `/questionnaire`,
-    data: JSON.stringify({"uuid":uuid}),
-    contentType: 'application/json;charset=UTF-8',
+    data: JSON.stringify({ uuid: uuid }),
+    contentType: "application/json;charset=UTF-8",
   }).done(function () {
     console.log("Server accepted : Questionnaire");
   });
 };
 
-export const ResultAnswerSenderService = function (uuid,answer,event) {
+export const ResultAnswerSenderService = function (uuid, answer, event) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function (e) {
     if (this.readyState === 4) {
@@ -53,10 +53,10 @@ export const ResultAnswerSenderService = function (uuid,answer,event) {
   $.ajax({
     type: "POST",
     url: `/result`,
-    data: JSON.stringify({"uuid":uuid,"answer":answer, "event": event}),
-    contentType: 'application/json;charset=UTF-8',
-  }).done(function () {
-    console.log("Server accepted : result");
+    data: JSON.stringify({ uuid: `${uuid}`, answer: answer, event: event }),
+    contentType: "application/json;charset=UTF-8",
+  }).done(function (data) {
+    console.log("Server accepted : ", data);
   });
 };
 

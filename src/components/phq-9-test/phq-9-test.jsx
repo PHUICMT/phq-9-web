@@ -2,7 +2,8 @@ import "./phq-9-test.scss";
 import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
-import { recordScreen, recordVideo, stopRecord } from '../../services/video-record';
+import { recordScreen, recordVideo, stopRecord ,setResultTobackend} from '../../services/video-record';
+import {  ResultAnswerSenderService } from "../../services/video-sender-service";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -11,8 +12,16 @@ import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import update from 'react-addons-update';
+import { v4 as uuidv4 } from 'uuid';
 
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
+import { QuestionnaireSenderService } from '../../services/video-sender-service'
+
+const questionnaire_uuid = uuidv4();
+
+try {
+    QuestionnaireSenderService(questionnaire_uuid);
+}catch (err) {}
 
 const PHQTestComponent = () => {
     const location = useLocation();
@@ -97,12 +106,12 @@ const PHQTestComponent = () => {
         useEffect(() => {
             if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
                 setIsScreenRecord(true);
-                recordScreen();
+                recordScreen(questionnaire_uuid);
             }
 
             if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
                 setIsVideoRecord(true);
-                recordVideo();
+                recordVideo(questionnaire_uuid);
             }
         }, [isScreenRecord, isVideoRecord]);
     };
@@ -140,16 +149,19 @@ const PHQTestComponent = () => {
     async function handleOnSubmit() {
         const sum = totalValues.reduce((result, number) => result + number);
         setTotalScore(sum);
-        stopRecord(totalValues, null);
+        stopRecord();
         setIsResultSubmit(true);
-        if (allowsRecord['webcamToggleAllows']) {
-            while (dataFromBackend == null) {
-                setDataFromBackend(await window.localStorage.getItem("data"));
-                console.log(dataFromBackend);
-                window.localStorage.clear();
-            }
-        }
-        handleScrollToResult();
+        ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
+        setDataFromBackend(await window.localStorage.getItem("data"));
+        window.localStorage.clear();
+        // if (allowsRecord['webcamToggleAllows']) {
+        //     while (dataFromBackend == null) {
+        //         setDataFromBackend(window.localStorage.getItem("data"));
+        //         console.log(dataFromBackend);
+        //         window.localStorage.clear();
+        //     }
+        // }
+        // handleScrollToResult();
     }
 
     function handleScrollToResult() {

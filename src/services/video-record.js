@@ -1,17 +1,9 @@
-import {VideoSenderService,QuestionnaireSenderService ,ResultAnswerSenderService} from './video-sender-service'
-import { v4 as uuidv4 } from 'uuid';
+import { VideoSenderService } from "./video-sender-service";
 
 let isWebcamStopped = false;
 let isScreenStopped = false;
-const uuid = uuidv4();
 
-try {
-  QuestionnaireSenderService(uuid)
-}catch{
-}
-
-
-export function handleRecord({ stream, mimeType }, recordType) {
+export function handleRecord({ stream, mimeType }, recordType, uuid) {
   let recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream);
 
@@ -33,31 +25,30 @@ export function handleRecord({ stream, mimeType }, recordType) {
       type: mimeType,
     });
     recordedChunks = [];
-    VideoSenderService(blob,recordType,uuid);
+    VideoSenderService(blob, recordType, uuid);
   };
   mediaRecorder.start(200);
 }
 
-export function stopRecord(totalValues,event) {
+export function stopRecord() {
   isWebcamStopped = true;
   isScreenStopped = true;
-  ResultAnswerSenderService(uuid,totalValues,event);
 }
 
-export async function recordVideo() {
+export async function recordVideo(uuid) {
   const mimeType = "video/webm";
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: true,
   });
-  handleRecord({ stream, mimeType }, "webcam");
+  handleRecord({ stream, mimeType }, "webcam", uuid);
 }
 
-export async function recordScreen() {
+export async function recordScreen(uuid) {
   const mimeType = "video/webm";
   const stream = await navigator.mediaDevices.getDisplayMedia({
     audio: false,
     video: true,
   });
-  handleRecord({ stream, mimeType }, "screen");
+  handleRecord({ stream, mimeType }, "screen", uuid);
 }
