@@ -2,8 +2,8 @@ import "./phq-9-test.scss";
 import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
-import { recordScreen, recordVideo, stopRecord ,setResultTobackend} from '../../services/video-record';
-import {  ResultAnswerSenderService } from "../../services/video-sender-service";
+import { recordScreen, recordVideo, stopRecord, setResultTobackend } from '../../services/video-record';
+import { ResultAnswerSenderService } from "../../services/video-sender-service";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -21,7 +21,7 @@ const questionnaire_uuid = uuidv4();
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
-}catch (err) {}
+} catch (err) { }
 
 const PHQTestComponent = () => {
     const location = useLocation();
@@ -152,8 +152,10 @@ const PHQTestComponent = () => {
         stopRecord();
         setIsResultSubmit(true);
         ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
-        setDataFromBackend(await window.localStorage.getItem("data"));
+        var getData = await window.localStorage.getItem("data");
+        setDataFromBackend(JSON.parse(getData));
         window.localStorage.clear();
+        console.log(dataFromBackend);
         // if (allowsRecord['webcamToggleAllows']) {
         //     while (dataFromBackend == null) {
         //         setDataFromBackend(window.localStorage.getItem("data"));

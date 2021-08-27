@@ -11,7 +11,8 @@ import { Link } from 'react-router-dom'
 
 
 function Result(props) {
-    console.log(props);
+    const responseFromBackend = props.data;
+    console.log(responseFromBackend);
     // const resultFromBackend  = () => {
     //     return (
     //         {
