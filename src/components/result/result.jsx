@@ -1,31 +1,35 @@
 import "./result.scss";
-import Download from '../../assets/icons/download-icon.svg'
-import Retry from '../../assets/icons/retry.svg'
+import Send from '../../assets/icons/send.svg'
 
+import { useState } from 'react';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom'
+import Radio from '@material-ui/core/Radio';
+import { useHistory } from 'react-router-dom'
 
 
 
 function Result(props) {
+    const [groupTest, setGroupTest] = useState(1);
+    let history = useHistory();
+    const handleRadioChange = (event) => {
+        setGroupTest(event.target.value);
+    };
+
     const responseFromBackend = props.data;
-    console.log(responseFromBackend);
-    // const resultFromBackend  = () => {
-    //     return (
-    //         {
-    //             "angry" : props.data["angry"],
-    //             "disgust" : props.data["disgust"],
-    //             "scared" : props.data["scared"], 
-    //             "happy" : props.data["happy"], 
-    //             "sad" : props.data["sad"], 
-    //             "surprised" : props.data["surprised"], 
-    //             "neutral" : props.data["neutral"]
-    //         }
-    //     );
-    // }
+    const resultFromBackend = () => {
+        return (
+            {
+                "angry": props.data.angry,
+                "happy": props.data.happy,
+                "sad": props.data.sad,
+                "neutral": props.data.neutral
+            }
+        );
+    }
+    console.log(resultFromBackend);
 
     const TextResults = () => {
 
@@ -62,6 +66,13 @@ function Result(props) {
             });
     }
 
+    function handleOnSendReport() {
+        history.push({
+            pathname: '/report',
+            state: { resultFromBackend : "" },
+        });
+    }
+
 
     return (
         <Container className="result-card-container">
@@ -77,8 +88,40 @@ function Result(props) {
                     <div className="result-card-icon" />
                 </div>
 
+                <div className="group-selected">
+                    <div className="title">
+                        <h>อาสาสมัคร : </h>
+                    </div>
+                    <div className="radio-box">
+                        <Radio
+                            checked={groupTest == 1}
+                            onChange={handleRadioChange}
+                            value={1}
+                        />
+                        <h className={`${groupTest == 1 ? 'checkedText' : ''}`}>กลุ่มที่ 1</h>
+                    </div>
+
+                    <div className="radio-box">
+                        <Radio
+                            checked={groupTest == 2}
+                            onChange={handleRadioChange}
+                            value={2}
+                        />
+                        <h className={`${groupTest == 2 ? 'checkedText' : ''}`}>กลุ่มที่ 2</h>
+                    </div>
+
+                    <div className="radio-box">
+                        <Radio
+                            checked={groupTest == 3}
+                            onChange={handleRadioChange}
+                            value={3}
+                        />
+                        <h className={`${groupTest == 3 ? 'checkedText' : ''}`}>กลุ่มที่ 3</h>
+                    </div>
+                </div>
+
                 <div className="button-group-container">
-                    <Button
+                    {/* <Button
                         onClick={() => handleOnSaveResult()}
                         variant="contained"
                         size="large"
@@ -91,6 +134,12 @@ function Result(props) {
                         variant="contained"
                         size="large"
                         className="retry-button"><img src={Retry} />ทำแบบทดสอบอีกครั้ง
+                    </Button> */}
+                    <Button
+                        onClick={() => handleOnSendReport()}
+                        variant="contained"
+                        size="large"
+                        className="submit-button"><img src={Send} /> รายงานผล
                     </Button>
                 </div>
             </div>

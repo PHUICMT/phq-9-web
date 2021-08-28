@@ -1,0 +1,47 @@
+.report-container {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+
+  .form-container {
+    position: absolute;
+    font-family: "Prompt", sans-serif;
+    display: grid;
+
+    .form-header {
+      width: 1100px;
+      height: 270px;
+      background-color: #6e6893;
+    }
+  }
+
+  .table-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    table {
+      background-color: #ffffff;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+
+    .MuiTableCell-root {
+      font-family: "Prompt", sans-serif;
+
+      padding: 16px;
+      font-size: 14px;
+      text-align: center;
+
+      border-bottom-width: 0.5px;
+      border-bottom-style: solid;
+      border-bottom-color: #d9d5ec;
+    }
+
+    .MuiTableCell-head {
+      font-weight: bold;
+      color: #6e6893;
+      background-color: #f4f2ff;
+    }
+  }
+}

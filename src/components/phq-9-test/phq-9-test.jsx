@@ -126,7 +126,7 @@ const PHQTestComponent = () => {
         };
         var className = index % 2;
         return (
-            <div className={`test-component _${className}`}>
+            <div className={`test-component _${className}`} id={`id_${index}`}>
                 {SVGNo(index)}
                 <div></div>
                 <h>{text}</h>
@@ -155,7 +155,7 @@ const PHQTestComponent = () => {
         var getData = await window.localStorage.getItem("data");
         setDataFromBackend(JSON.parse(getData));
         window.localStorage.clear();
-        console.log(dataFromBackend);
+        // console.log(dataFromBackend);
         // if (allowsRecord['webcamToggleAllows']) {
         //     while (dataFromBackend == null) {
         //         setDataFromBackend(window.localStorage.getItem("data"));
