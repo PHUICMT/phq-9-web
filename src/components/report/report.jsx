@@ -1,5 +1,6 @@
 import "./report.scss";
-import Send from '../../assets/icons/send.svg'
+import CheckOn from '../../assets/icons/check-box-on.svg'
+import CheckOff from '../../assets/icons/check-box-off.svg'
 
 import { Container } from 'react-bulma-components';
 import React from 'react';
@@ -14,6 +15,20 @@ import TableRow from '@material-ui/core/TableRow';
 
 
 export function Report(props) {
+    const checkBox = props.location.state.checkBox;
+
+    function checkBoxSelected(type) {
+        if (checkBox == type) {
+            return CheckOn;
+        }
+        return CheckOff;
+    }
+    function checkBoxSelectedTextHighlight(type) {
+        if (checkBox == type) {
+            return true;
+        }
+        return false;
+    }
 
     function createData(ItemQuestion, ClickTime, ReactionTime, Emotion) {
         return { ItemQuestion, ClickTime, ReactionTime, Emotion };
@@ -43,12 +58,26 @@ export function Report(props) {
     return (
         <Container className="report-container">
 
-            <Container className="form-container">
-                <div className="form-header">
+            <Container className="paper-container">
+                <div className="form-header-box">
+                    <div className="form-text-header">
+                        <p className="personal-id">รหัส .........................</p>
+                        <center><p>รายงานวิเคราะห์แนวโน้มภาวะซึมเศร้า</p></center>
+                        <div className="group-type">
+                            <p>ประเภทกลุ่มตัวอย่าง</p>
+                            <p id={`${checkBoxSelectedTextHighlight(1)?'selected-group':''}`}><img src={checkBoxSelected(1)} /> ปกติ</p>
+                            <p id={`${checkBoxSelectedTextHighlight(2)?'selected-group':''}`}><img src={checkBoxSelected(2)} /> มีภาวะซึมเศร้า</p>
+                            <p id={`${checkBoxSelectedTextHighlight(3)?'selected-group':''}`}><img src={checkBoxSelected(3)} /> กำลังรักษา</p>
+                        </div>
+                        <div className="personal-info">
+                            <p>เพศ .........................</p>
+                            <p>อายุ .........................</p>
+                            <p>สถานภาพ .........................</p>
+                        </div>
+                    </div>
+                    <div className="form-emotion">
 
-                </div>
-                <div className="form-emotion">
-
+                    </div>
                 </div>
                 <TableContainer className="table-container">
                     <Table className={classes.table} aria-label="customized table">

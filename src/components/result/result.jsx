@@ -69,7 +69,10 @@ function Result(props) {
     function handleOnSendReport() {
         history.push({
             pathname: '/report',
-            state: { resultFromBackend : "" },
+            state: {
+                resultFromBackend: "",
+                checkBox: groupTest,
+            },
         });
     }
 
