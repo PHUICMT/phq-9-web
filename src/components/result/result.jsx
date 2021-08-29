@@ -2,8 +2,6 @@ import "./result.scss";
 import Send from '../../assets/icons/send.svg'
 
 import { useState } from 'react';
-import domtoimage from 'dom-to-image';
-import { saveAs } from 'file-saver';
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -54,17 +52,6 @@ function Result(props) {
     const resultStyleBorderColor = {
         backgroundColor: result['color'] + '1c',
     };
-
-    function handleOnSaveResult() {
-        var container = document.getElementById('result-card-container');
-        container.style.backgroundColor = "#FFFF";
-        domtoimage.toBlob(container)
-            .then(function (blob) {
-                saveAs(blob, '[PHQ-9]Result.png');
-            }).finally(function () {
-                container.style.backgroundColor = result['color'] + '1c';
-            });
-    }
 
     function handleOnSendReport() {
         history.push({
@@ -124,20 +111,6 @@ function Result(props) {
                 </div>
 
                 <div className="button-group-container">
-                    {/* <Button
-                        onClick={() => handleOnSaveResult()}
-                        variant="contained"
-                        size="large"
-                        className="submit-button"><img src={Download} />บันทึกผลการทดสอบ
-                    </Button>
-
-                    <Button
-                        component={Link}
-                        to={'/index'}
-                        variant="contained"
-                        size="large"
-                        className="retry-button"><img src={Retry} />ทำแบบทดสอบอีกครั้ง
-                    </Button> */}
                     <Button
                         onClick={() => handleOnSendReport()}
                         variant="contained"
