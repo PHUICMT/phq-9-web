@@ -49,9 +49,18 @@
       color: rgb(4, 0, 255);
     }
 
-    .MuiSlider-markLabel {
-      font-family: "Prompt", sans-serif;
+    .highlight-box {
       font-weight: bold;
+    }
+    .MuiTypography-root {
+      font-family: "Prompt", sans-serif;
+      color: #6c5ce7;
+    }
+    .MuiIconButton-colorSecondary {
+      color: #5447b6;
+    }
+    .Mui-disabled {
+      color: #5447b6b7;
     }
   }
   .submit-button {

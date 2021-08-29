@@ -88,7 +88,7 @@ function Result(props) {
                             onChange={handleRadioChange}
                             value={1}
                         />
-                        <h className={`${groupTest == 1 ? 'checkedText' : ''}`}>กลุ่มที่ 1</h>
+                        <h className={`${groupTest == 1 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(1)}>กลุ่มที่ 1</h>
                     </div>
 
                     <div className="radio-box">
@@ -97,7 +97,7 @@ function Result(props) {
                             onChange={handleRadioChange}
                             value={2}
                         />
-                        <h className={`${groupTest == 2 ? 'checkedText' : ''}`}>กลุ่มที่ 2</h>
+                        <h className={`${groupTest == 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มที่ 2</h>
                     </div>
 
                     <div className="radio-box">
@@ -106,7 +106,7 @@ function Result(props) {
                             onChange={handleRadioChange}
                             value={3}
                         />
-                        <h className={`${groupTest == 3 ? 'checkedText' : ''}`}>กลุ่มที่ 3</h>
+                        <h className={`${groupTest == 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มที่ 3</h>
                     </div>
                 </div>
 

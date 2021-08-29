@@ -8,9 +8,12 @@ import { ResultAnswerSenderService } from "../../services/video-sender-service";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { Container } from 'react-bulma-components';
-import { withStyles } from '@material-ui/core/styles';
-import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -35,40 +38,40 @@ const PHQTestComponent = () => {
         window.scrollTo(0, 0);
     }, [location]);
 
-    const PHQSlider = withStyles({
-        root: {
-            color: '#6C5CE7',
-            height: 8,
-        },
-        thumb: {
-            height: 18,
-            width: 18,
-            backgroundColor: '#6C5CE7',
-            border: '2px solid #FFFFFF',
-            marginTop: -5,
-            marginLeft: -12,
-            '&:focus, &:hover, &$active': {
-                boxShadow: 'inherit',
-            },
-        },
-        track: {
-            height: 8,
-            borderRadius: 4,
-        },
-        rail: {
-            color: '#444444',
-            opacity: 1,
-            height: 8,
-            borderRadius: 4,
-        },
-        mark: {
-            opacity: 0,
-        },
-        markLabelActive: {
-            color: '#6C5CE7',
-        },
-        active: {}
-    })(Slider);
+    // const PHQSlider = withStyles({
+    //     root: {
+    //         color: '#6C5CE7',
+    //         height: 8,
+    //     },
+    //     thumb: {
+    //         height: 18,
+    //         width: 18,
+    //         backgroundColor: '#6C5CE7',
+    //         border: '2px solid #FFFFFF',
+    //         marginTop: -5,
+    //         marginLeft: -12,
+    //         '&:focus, &:hover, &$active': {
+    //             boxShadow: 'inherit',
+    //         },
+    //     },
+    //     track: {
+    //         height: 8,
+    //         borderRadius: 4,
+    //     },
+    //     rail: {
+    //         color: '#444444',
+    //         opacity: 1,
+    //         height: 8,
+    //         borderRadius: 4,
+    //     },
+    //     mark: {
+    //         opacity: 0,
+    //     },
+    //     markLabelActive: {
+    //         color: '#6C5CE7',
+    //     },
+    //     active: {}
+    // })(Slider);
 
     const marks = [
         {
@@ -118,29 +121,40 @@ const PHQTestComponent = () => {
 
 
     const TestComp = (index, text) => {
+        var className = index % 2;
         const [value, setValue] = useState(0);
-        const handleSliderChange = (event, newValue) => {
-            setValue(newValue);
-            const tmp_totalValue = update(totalValues, { [index - 1]: { $set: newValue } });
+        const handleCheckedChange = (n) => {
+            setValue(n)
+            const tmp_totalValue = update(totalValues, { [index - 1]: { $set: n } });
             setTotalValues(tmp_totalValue);
         };
-        var className = index % 2;
+        const formContainer = (n) => {
+            return (
+                <FormControlLabel
+                    value={n}
+                    checked={value == n}
+                    onChange={() => handleCheckedChange(n)}
+                    control={<Radio />}
+                    label={<Typography style={(value == n) ? { fontWeight: 'bold' } : null}>{n}</Typography>}
+                    labelPlacement="bottom"
+                    disabled={isResultSubmit ? true : false}
+                />
+            );
+        }
         return (
             <div className={`test-component _${className}`} id={`id_${index}`}>
                 {SVGNo(index)}
                 <div></div>
                 <h>{text}</h>
                 <div className="Slider-container">
-                    <PHQSlider
-                        value={value}
-                        onChange={handleSliderChange}
-                        aria-labelledby="discrete-slider-restrict"
-                        step={null}
-                        valueLabelDisplay="on"
-                        marks={marks}
-                        min={0}
-                        max={3}
-                    />
+                    <FormControl component="fieldset">
+                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                            {formContainer(0)}
+                            {formContainer(1)}
+                            {formContainer(2)}
+                            {formContainer(3)}
+                        </RadioGroup>
+                    </FormControl>
                 </div>
             </div>
         );
@@ -148,6 +162,7 @@ const PHQTestComponent = () => {
 
     async function handleOnSubmit() {
         const sum = totalValues.reduce((result, number) => result + number);
+        console.log(totalValues);
         setTotalScore(sum);
         stopRecord();
         setIsResultSubmit(true);
