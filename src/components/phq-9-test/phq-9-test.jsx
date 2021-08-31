@@ -2,8 +2,8 @@ import "./phq-9-test.scss";
 import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
-import { recordScreen, recordVideo, stopRecord, setResultTobackend } from '../../services/video-record';
-import { ResultAnswerSenderService } from "../../services/video-sender-service";
+import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
+import { QuestionnaireSenderService, ResultAnswerSenderService, VideoSenderService } from "../../services/video-sender-service";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -16,9 +16,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
-
-import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
-import { QuestionnaireSenderService } from '../../services/video-sender-service'
 
 const questionnaire_uuid = uuidv4();
 
@@ -34,63 +31,59 @@ const PHQTestComponent = () => {
     const [dataFromBackend, setDataFromBackend] = useState(null);
     const allowsRecord = useState(location.state)[0];
 
+    const [isScreenRecord, setIsScreenRecord] = useState(false);
+    const [isVideoRecord, setIsVideoRecord] = useState(false);
+    const [streamWebcam, setStreamWebcam] = useState(null);
+    const [streamScreen, setStreamScreen] = useState(null);
+
+    function stopRecord() {
+        streamWebcam.getTracks().forEach((track) => track.stop());
+        streamScreen.getTracks().forEach((track) => track.stop());
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
 
-    // const PHQSlider = withStyles({
-    //     root: {
-    //         color: '#6C5CE7',
-    //         height: 8,
-    //     },
-    //     thumb: {
-    //         height: 18,
-    //         width: 18,
-    //         backgroundColor: '#6C5CE7',
-    //         border: '2px solid #FFFFFF',
-    //         marginTop: -5,
-    //         marginLeft: -12,
-    //         '&:focus, &:hover, &$active': {
-    //             boxShadow: 'inherit',
-    //         },
-    //     },
-    //     track: {
-    //         height: 8,
-    //         borderRadius: 4,
-    //     },
-    //     rail: {
-    //         color: '#444444',
-    //         opacity: 1,
-    //         height: 8,
-    //         borderRadius: 4,
-    //     },
-    //     mark: {
-    //         opacity: 0,
-    //     },
-    //     markLabelActive: {
-    //         color: '#6C5CE7',
-    //     },
-    //     active: {}
-    // })(Slider);
+    function handleRecord({ stream, mimeType }, recordType, uuid) {
+        let recordedChunks = [];
+        const mediaRecorder = new MediaRecorder(stream);
 
-    const marks = [
-        {
-            value: 0,
-            label: '0',
-        },
-        {
-            value: 1,
-            label: '1',
-        },
-        {
-            value: 2,
-            label: '2',
-        },
-        {
-            value: 3,
-            label: '3',
-        },
-    ];
+        mediaRecorder.ondataavailable = function (e) {
+            if (e.data.size > 0) {
+                recordedChunks.push(e.data);
+            }
+        };
+        mediaRecorder.onstop = function () {
+            const blob = new Blob(recordedChunks, {
+                type: mimeType,
+            });
+            recordedChunks = [];
+            return VideoSenderService(blob, recordType, uuid);
+        };
+        mediaRecorder.start(200);
+    }
+
+    async function recordVideo(uuid) {
+        const mimeType = "video/webm";
+        const stream = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: true,
+        });
+        setStreamWebcam(stream);
+        handleRecord({ stream, mimeType }, "webcam", uuid);
+    }
+
+    async function recordScreen(uuid) {
+        const mimeType = "video/webm";
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+            audio: false,
+            video: true,
+        });
+        setStreamScreen(stream);
+        handleRecord({ stream, mimeType }, "screen", uuid);
+    }
+
 
     const SVGNo = (index) => {
         return (
@@ -103,9 +96,7 @@ const PHQTestComponent = () => {
     }
 
     function Recording() {
-        const [isScreenRecord, setIsScreenRecord] = useState(false);
-        const [isVideoRecord, setIsVideoRecord] = useState(false);
-
+        var temp_backend = null;
         useEffect(() => {
             if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
                 setIsScreenRecord(true);
@@ -117,6 +108,7 @@ const PHQTestComponent = () => {
                 recordVideo(questionnaire_uuid);
             }
         }, [isScreenRecord, isVideoRecord]);
+        return temp_backend;
     };
 
 
@@ -160,25 +152,30 @@ const PHQTestComponent = () => {
         );
     }
 
-    async function handleOnSubmit() {
+    function handleOnSubmit() {
         const sum = totalValues.reduce((result, number) => result + number);
-        console.log(totalValues);
         setTotalScore(sum);
         stopRecord();
         setIsResultSubmit(true);
         ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
-        var getData = await window.localStorage.getItem("data");
-        setDataFromBackend(JSON.parse(getData));
-        window.localStorage.clear();
-        // console.log(dataFromBackend);
-        // if (allowsRecord['webcamToggleAllows']) {
-        //     while (dataFromBackend == null) {
-        //         setDataFromBackend(window.localStorage.getItem("data"));
-        //         console.log(dataFromBackend);
-        //         window.localStorage.clear();
+        console.log(dataFromBackend);
+
+
+        // useEffect(() => {
+        //     if (allowsRecord['webcamToggleAllows']) {
+        //         await Promise.all([
+        //             getData = window.localStorage.getItem("data"),
+        //             console.log(getData)
+        //         ]).then(() => {
+        //             setDataFromBackend(getData);
+        //             window.localStorage.clear();
+        //             setIsLoaded(true);
+        //         })
         //     }
-        // }
-        // handleScrollToResult();
+        //     console.log(dataFromBackend);
+        // }, [isLoaded]);
+
+        handleScrollToResult();
     }
 
     function handleScrollToResult() {
@@ -198,7 +195,7 @@ const PHQTestComponent = () => {
 
     return (
         <div>
-            {Recording()}
+            <Recording />
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}

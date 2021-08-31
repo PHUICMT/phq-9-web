@@ -11,7 +11,7 @@ export const VideoSenderService = function (blob, recordType, uuid) {
   video.append("uuid", uuid);
   video.append("blob", blob);
 
-  $.ajax({
+  return $.ajax({
     type: "POST",
     url: `/upload-recorded-${recordType}`,
     data: video,
@@ -19,7 +19,7 @@ export const VideoSenderService = function (blob, recordType, uuid) {
     contentType: false,
   }).done(function (data) {
     if (recordType.includes("webcam")) {
-      window.localStorage.setItem("data", JSON.stringify({ data }));
+      return data;
     }
   });
 };
