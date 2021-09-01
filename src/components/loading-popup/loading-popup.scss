@@ -1,0 +1,14 @@
+.loading-popup {
+  text-align: center;
+  .MuiPaper-root {
+    background-color: rgba(45, 0, 56, 0.452);
+  }
+  .MuiPaper-rounded {
+    border-radius: 30px;
+  }
+  .text-loding {
+    font-family: "Prompt", sans-serif;
+    font-size: 24px;
+    color: #e5b8ff;
+  }
+}

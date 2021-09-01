@@ -3,7 +3,8 @@ import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
-import { QuestionnaireSenderService, ResultAnswerSenderService, VideoSenderService } from "../../services/video-sender-service";
+import LoadingPopup from "../../components/loading-popup/loading-popup"
+import { QuestionnaireSenderService, ResultAnswerSenderService } from "../../services/video-sender-service";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -16,6 +17,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
+import $ from "jquery";
 
 const questionnaire_uuid = uuidv4();
 
@@ -36,9 +38,42 @@ const PHQTestComponent = () => {
     const [streamWebcam, setStreamWebcam] = useState(null);
     const [streamScreen, setStreamScreen] = useState(null);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+    const VideoSenderService = function (blob, recordType, uuid) {
+        setIsLoading(true);
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function (e) {
+            if (this.readyState === 4) {
+                console.log("Server returned: ", e.target.responseText);
+            }
+        };
+        var video = new FormData();
+        video.append("uuid", uuid);
+        video.append("blob", blob);
+
+        return $.ajax({
+            type: "POST",
+            url: `/upload-recorded-${recordType}`,
+            data: video,
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            if (recordType.includes("webcam")) {
+                setDataFromBackend(data);
+                console.log(dataFromBackend);
+                setIsLoading(false);
+            }
+        });
+    };
+
     function stopRecord() {
-        streamWebcam.getTracks().forEach((track) => track.stop());
-        streamScreen.getTracks().forEach((track) => track.stop());
+        if (allowsRecord['screenToggleAllows']) {
+            streamScreen.getTracks().forEach((track) => track.stop());
+        }
+        if (allowsRecord['webcamToggleAllows']) {
+            streamWebcam.getTracks().forEach((track) => track.stop());
+        }
     }
 
     useEffect(() => {
@@ -195,6 +230,7 @@ const PHQTestComponent = () => {
 
     return (
         <div>
+            <LoadingPopup open={isLoading} />
             <Recording />
             <PHQTitleCard />
             <Container className="test-container">
