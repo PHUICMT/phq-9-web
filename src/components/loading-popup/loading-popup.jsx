@@ -15,13 +15,14 @@ const LoadingPopup = (props) => {
 
     const loadingPopUp = React.useRef(null);
     React.useEffect(() => {
+        setOpen(props.open);
         if (open) {
             const { current: loadingPopUpElement } = loadingPopUp;
             if (loadingPopUpElement !== null) {
                 loadingPopUpElement.focus();
             }
         }
-    }, [open]);
+    }, [open,props.open]);
 
     return (
         <div>

@@ -17,17 +17,24 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
-import $ from "jquery";
+import $, { get } from "jquery";
 
 const questionnaire_uuid = uuidv4();
+let timeStamp = [[], [], [], [], [], [], [], [], []];
+let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
-} catch (err) { }
+} catch { }
 
+function getCurrentTime() {
+    var now = Math.round((new Date()).getTime());
+    return now;
+}
 const PHQTestComponent = () => {
     const location = useLocation();
     const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
     const [dataFromBackend, setDataFromBackend] = useState(null);
@@ -39,6 +46,12 @@ const PHQTestComponent = () => {
     const [streamScreen, setStreamScreen] = useState(null);
 
     const [isLoading, setIsLoading] = useState(false);
+    let start_end_time = [getCurrentTime(), 0];
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+
+    }, [location]);
 
     const VideoSenderService = function (blob, recordType, uuid) {
         setIsLoading(true);
@@ -61,7 +74,6 @@ const PHQTestComponent = () => {
         }).done(function (data) {
             if (recordType.includes("webcam")) {
                 setDataFromBackend(data);
-                console.log(dataFromBackend);
                 setIsLoading(false);
             }
         });
@@ -75,10 +87,6 @@ const PHQTestComponent = () => {
             streamWebcam.getTracks().forEach((track) => track.stop());
         }
     }
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [location]);
 
     function handleRecord({ stream, mimeType }, recordType, uuid) {
         let recordedChunks = [];
@@ -146,26 +154,37 @@ const PHQTestComponent = () => {
         return temp_backend;
     };
 
-
     const TestComp = (index, text) => {
         var className = index % 2;
         const [value, setValue] = useState(0);
+        const [isChanged, setIsChanged] = useState(null);
         const handleCheckedChange = (n) => {
+            if (isChanged == null) {
+                setIsChanged(false);
+            }
+
+            if (isChanged) {
+                changedTimeStamp[index - 1] = [...changedTimeStamp[index - 1], getCurrentTime()];
+            } else {
+                setIsChanged(true);
+            }
             setValue(n)
             const tmp_totalValue = update(totalValues, { [index - 1]: { $set: n } });
             setTotalValues(tmp_totalValue);
         };
         const formContainer = (n) => {
             return (
-                <FormControlLabel
-                    value={n}
-                    checked={value == n}
-                    onChange={() => handleCheckedChange(n)}
-                    control={<Radio />}
-                    label={<Typography style={(value == n) ? { fontWeight: 'bold' } : null}>{n}</Typography>}
-                    labelPlacement="bottom"
-                    disabled={isResultSubmit ? true : false}
-                />
+                <div>
+                    <FormControlLabel
+                        value={n}
+                        checked={value == n}
+                        onChange={() => handleCheckedChange(n)}
+                        control={<Radio />}
+                        label={<Typography style={(value == n) ? { fontWeight: 'bold' } : null}>{n}</Typography>}
+                        labelPlacement="bottom"
+                        disabled={isResultSubmit ? true : false}
+                    />
+                </div>
             );
         }
         return (
@@ -191,26 +210,10 @@ const PHQTestComponent = () => {
         const sum = totalValues.reduce((result, number) => result + number);
         setTotalScore(sum);
         stopRecord();
+        start_end_time[1] = getCurrentTime();
         setIsResultSubmit(true);
         ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
-        console.log(dataFromBackend);
-
-
-        // useEffect(() => {
-        //     if (allowsRecord['webcamToggleAllows']) {
-        //         await Promise.all([
-        //             getData = window.localStorage.getItem("data"),
-        //             console.log(getData)
-        //         ]).then(() => {
-        //             setDataFromBackend(getData);
-        //             window.localStorage.clear();
-        //             setIsLoaded(true);
-        //         })
-        //     }
-        //     console.log(dataFromBackend);
-        // }, [isLoaded]);
-
-        handleScrollToResult();
+        console.log(start_end_time);
     }
 
     function handleScrollToResult() {
@@ -244,12 +247,13 @@ const PHQTestComponent = () => {
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
 
-                {isResultSubmit ? <Result score={totalScore} data={dataFromBackend} /> : <Button
+                {isResultSubmit && (dataFromBackend != null) ? <Result score={totalScore} data={dataFromBackend} start_end_time={start_end_time} /> : <Button
                     variant="contained"
                     size="large"
                     className="submit-button"
                     onClick={() => handleOnSubmit()}
                 >ส่งคำตอบ</Button>}
+                {(dataFromBackend != null) ? handleScrollToResult() : null}
             </Container>
         </div>
     );

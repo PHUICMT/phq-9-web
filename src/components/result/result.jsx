@@ -17,16 +17,6 @@ function Result(props) {
     };
 
     const responseFromBackend = props.data;
-    // const resultFromBackend = () => {
-    //     return (
-    //         {
-    //             "angry": props.data.angry,
-    //             "happy": props.data.happy,
-    //             "sad": props.data.sad,
-    //             "neutral": props.data.neutral
-    //         }
-    //     );
-    // }
 
     const TextResults = () => {
 
@@ -56,7 +46,7 @@ function Result(props) {
         history.push({
             pathname: '/report',
             state: {
-                resultFromBackend: "",
+                resultFromBackend: responseFromBackend,
                 checkBox: groupTest,
             },
         });
