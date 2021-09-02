@@ -12,7 +12,7 @@ const PHQTitleCard = () => {
                     <div className="rules">เกณฑ์ให้คะแนน : <br/>ไม่เลย = 0, มีบางวันหรือไม่บ่อย = 1, มีค่อนข้างบ่อย = 2, มีเกือบทุกวัน = 3</div>
                     <div className="detail">ในช่วง <b>2 สัปดาห์</b> ที่ผ่านมา ท่านมีอาการดังต่อไปนี้บ่อยแค่ไหน?</div>
                 </div>
-                <img src={Sad}/>
+                <img alt='sad' src={Sad}/>
             </div>
         </Container>
     );

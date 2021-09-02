@@ -137,7 +137,7 @@ const PHQTestComponent = () => {
         return (
             <div className="index-box">
                 <h className="index-text">{index}</h>
-                <img src={IndexBox} />
+                <img alt='index-box' src={IndexBox} />
             </div>
         );
 
@@ -155,7 +155,7 @@ const PHQTestComponent = () => {
                 setIsVideoRecord(true);
                 recordVideo(questionnaire_uuid);
             }
-        }, [isScreenRecord, isVideoRecord]);
+        });
         return temp_backend;
     };
 
@@ -199,10 +199,10 @@ const PHQTestComponent = () => {
                 <div>
                     <FormControlLabel
                         value={n}
-                        checked={value == n}
+                        checked={value === n}
                         onChange={() => handleCheckedChange(n)}
                         control={<Radio />}
-                        label={<Typography style={(value == n) ? { fontWeight: 'bold' } : null}>{n}</Typography>}
+                        label={<Typography style={(value === n) ? { fontWeight: 'bold' } : null}>{n}</Typography>}
                         labelPlacement="bottom"
                         disabled={isResultSubmit ? true : false}
                     />

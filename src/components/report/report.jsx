@@ -28,13 +28,13 @@ export function Report(props) {
     const checkBox = props.location.state.checkBox;
 
     function checkBoxSelected(type) {
-        if (checkBox == type) {
+        if (checkBox === type) {
             return CheckOn;
         }
         return CheckOff;
     }
     function checkBoxSelectedTextHighlight(type) {
-        if (checkBox == type) {
+        if (checkBox === type) {
             return true;
         }
         return false;
@@ -87,9 +87,9 @@ export function Report(props) {
                         <center><strong><p>รายงานวิเคราะห์แนวโน้มภาวะซึมเศร้า</p></strong></center>
                         <div className="group-type">
                             <p>ประเภทกลุ่มตัวอย่าง</p>
-                            <p id={`${checkBoxSelectedTextHighlight(1) ? 'selected-group' : ''}`}><img src={checkBoxSelected(1)} /> ปกติ</p>
-                            <p id={`${checkBoxSelectedTextHighlight(2) ? 'selected-group' : ''}`}><img src={checkBoxSelected(2)} /> มีภาวะซึมเศร้า</p>
-                            <p id={`${checkBoxSelectedTextHighlight(3) ? 'selected-group' : ''}`}><img src={checkBoxSelected(3)} /> กำลังรักษา</p>
+                            <p id={`${checkBoxSelectedTextHighlight(1) ? 'selected-group' : ''}`}><img alt='check' src={checkBoxSelected(1)} /> ปกติ</p>
+                            <p id={`${checkBoxSelectedTextHighlight(2) ? 'selected-group' : ''}`}><img alt='check' src={checkBoxSelected(2)} /> มีภาวะซึมเศร้า</p>
+                            <p id={`${checkBoxSelectedTextHighlight(3) ? 'selected-group' : ''}`}><img alt='check' src={checkBoxSelected(3)} /> กำลังรักษา</p>
                         </div>
                         <div className="personal-info">
                             <p>เพศ ...................</p>
@@ -98,10 +98,10 @@ export function Report(props) {
                         </div>
                     </div>
                     <div className="form-emotion">
-                        <div className="icon-symbol"><img src={Angry} /><h style={{ color: '#B5453C' }}>Angry</h></div>
-                        <div className="icon-symbol"><img src={Happy} /><h style={{ color: '#00D4D4' }}>Happy</h></div>
-                        <div className="icon-symbol"><img src={Neutral} /><h style={{ color: '#699DEE' }}>Neutral</h></div>
-                        <div className="icon-symbol"><img src={Sad} /><h style={{ color: '#2E3552' }}>Sad</h></div>
+                        <div className="icon-symbol"><img alt='emote' src={Angry} /><h style={{ color: '#B5453C' }}>Angry</h></div>
+                        <div className="icon-symbol"><img alt='emote' src={Happy} /><h style={{ color: '#00D4D4' }}>Happy</h></div>
+                        <div className="icon-symbol"><img alt='emote' src={Neutral} /><h style={{ color: '#699DEE' }}>Neutral</h></div>
+                        <div className="icon-symbol"><img alt='emote' src={Sad} /><h style={{ color: '#2E3552' }}>Sad</h></div>
                     </div>
                 </div>
                 <TableContainer className="table-container">
@@ -131,14 +131,14 @@ export function Report(props) {
                         onClick={() => handleOnSaveResult()}
                         variant="contained"
                         size="large"
-                        className="submit-button"><img src={Download} />&nbsp;บันทึกผลการทดสอบ
+                        className="submit-button"><img alt='download' src={Download} />&nbsp;บันทึกผลการทดสอบ
                     </Button>
                     <Button
                         target="_blank"
                         href="http://www.google.com/"
                         variant="contained"
                         size="large"
-                        className="retry-button"><img src={QuestionnaireIcon} />&nbsp;ทำแบบประเมิน
+                        className="retry-button"><img alt='test' src={QuestionnaireIcon} />&nbsp;ทำแบบประเมิน
                     </Button>
                 </div>
             </div>

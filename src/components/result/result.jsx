@@ -1,7 +1,7 @@
 import "./result.scss";
 import Send from '../../assets/icons/send.svg'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -10,6 +10,28 @@ import { useHistory } from 'react-router-dom'
 
 
 function Result(props) {
+    const [score, setScore] = useState([]);
+    const [data, setData] = useState([]);
+    const [start_end_time, setStart_end_time] = useState([]);
+    const [hoverTime, setHoverTime] = useState([]);
+
+    useEffect(() => {
+        setScore(props.score);
+        setData(props.data);
+        setStart_end_time(props.start_end_time);
+        setHoverTime(props.hoverTime);
+    }, [
+        score,
+        data,
+        start_end_time,
+        hoverTime,
+        props.score,
+        props.data,
+        props.start_end_time,
+        props.hoverTime,
+
+    ])
+
     const [groupTest, setGroupTest] = useState(1);
     let history = useHistory();
     const handleRadioChange = (event) => {
@@ -73,29 +95,29 @@ function Result(props) {
                     </div>
                     <div className="radio-box">
                         <Radio
-                            checked={groupTest == 1}
+                            checked={groupTest === 1}
                             onChange={handleRadioChange}
                             value={1}
                         />
-                        <h className={`${groupTest == 1 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(1)}>กลุ่มที่ 1</h>
+                        <h className={`${groupTest === 1 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(1)}>กลุ่มที่ 1</h>
                     </div>
 
                     <div className="radio-box">
                         <Radio
-                            checked={groupTest == 2}
+                            checked={groupTest === 2}
                             onChange={handleRadioChange}
                             value={2}
                         />
-                        <h className={`${groupTest == 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มที่ 2</h>
+                        <h className={`${groupTest === 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มที่ 2</h>
                     </div>
 
                     <div className="radio-box">
                         <Radio
-                            checked={groupTest == 3}
+                            checked={groupTest === 3}
                             onChange={handleRadioChange}
                             value={3}
                         />
-                        <h className={`${groupTest == 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มที่ 3</h>
+                        <h className={`${groupTest === 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มที่ 3</h>
                     </div>
                 </div>
 
@@ -104,7 +126,7 @@ function Result(props) {
                         onClick={() => handleOnSendReport()}
                         variant="contained"
                         size="large"
-                        className="submit-button"><img src={Send} /> รายงานผล
+                        className="submit-button"><img alt='send' src={Send} /> รายงานผล
                     </Button>
                 </div>
             </div>
