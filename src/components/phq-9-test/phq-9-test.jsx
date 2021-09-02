@@ -28,7 +28,11 @@ let fontEndTimeStamp = [[], [], [], [], [], [], [], [], []];
 let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
+<<<<<<< HEAD
 let start_end_time = [-1, -1];
+=======
+let start_end_time = [getCurrentTime(), 0];
+>>>>>>> 📝 Change .gitignore
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
@@ -75,10 +79,11 @@ const PHQTestComponent = () => {
             data: video,
             processData: false,
             contentType: false,
-        }).done(function (data) {
-            if (recordType.includes("webcam")) {
-                setDataFromBackend(data);
-                setIsLoading(false);
+            success: function (data) {
+                if (recordType.includes("webcam")) {
+                    setDataFromBackend(data);
+                    setIsLoading(false);
+                }
             }
         });
     };
@@ -193,7 +198,11 @@ const PHQTestComponent = () => {
                 var now = (getCurrentTime() - start_end_time[0]);
                 var sumTime = now - before;
                 scopeTime[index - 1] += sumTime;
+<<<<<<< HEAD
                 fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [before, now]];
+=======
+                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
+>>>>>>> 📝 Change .gitignore
             }
         }
         const formContainer = (n) => {
@@ -281,7 +290,10 @@ const PHQTestComponent = () => {
                         fontEndTimeStamp={fontEndTimeStamp}
                         clickTime={clickTime}
                     />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 📝 Change .gitignore
                     : <Button
                         variant="contained"
                         size="large"
