@@ -17,9 +17,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
-import $, { get } from "jquery";
+import $ from "jquery";
+import moment from 'moment';
 
 const questionnaire_uuid = uuidv4();
+
+let clickTime = [null, null, null, null, null, null, null, null, null];
+let scopeTime = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
 
@@ -158,9 +163,12 @@ const PHQTestComponent = () => {
         var className = index % 2;
         const [value, setValue] = useState(0);
         const [isChanged, setIsChanged] = useState(null);
+        const [onHover, setOnHover] = useState(false);
         const handleCheckedChange = (n) => {
+            timeStamp[index - 1] = [...timeStamp[index - 1], getCurrentTime()];
             if (isChanged == null) {
                 setIsChanged(false);
+                clickTime[index - 1] = moment().format('HH:mm:ss');
             }
 
             if (isChanged) {
@@ -172,6 +180,20 @@ const PHQTestComponent = () => {
             const tmp_totalValue = update(totalValues, { [index - 1]: { $set: n } });
             setTotalValues(tmp_totalValue);
         };
+
+        const handleOnMouseOver = () => {
+            if (!onHover) {
+                setOnHover(true);
+                startHover[index - 1] = getCurrentTime();
+            }
+        }
+        const handleOnMouseLeave = () => {
+            if (onHover) {
+                setOnHover(false);
+                var sumTime = getCurrentTime() - startHover[index - 1];
+                scopeTime[index - 1] += sumTime;
+            }
+        }
         const formContainer = (n) => {
             return (
                 <div>
@@ -188,7 +210,7 @@ const PHQTestComponent = () => {
             );
         }
         return (
-            <div className={`test-component _${className}`} id={`id_${index}`}>
+            <div className={`test-component _${className}`} id={`id_${index}`} onMouseOver={handleOnMouseOver} onMouseLeave={handleOnMouseLeave}>
                 {SVGNo(index)}
                 <div></div>
                 <h>{text}</h>
@@ -213,7 +235,6 @@ const PHQTestComponent = () => {
         start_end_time[1] = getCurrentTime();
         setIsResultSubmit(true);
         ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
-        console.log(start_end_time);
     }
 
     function handleScrollToResult() {
@@ -247,12 +268,19 @@ const PHQTestComponent = () => {
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
 
-                {isResultSubmit && (dataFromBackend != null) ? <Result score={totalScore} data={dataFromBackend} start_end_time={start_end_time} /> : <Button
-                    variant="contained"
-                    size="large"
-                    className="submit-button"
-                    onClick={() => handleOnSubmit()}
-                >ส่งคำตอบ</Button>}
+                {isResultSubmit && (dataFromBackend != null) ?
+                    <Result
+                        score={totalScore}
+                        data={dataFromBackend}
+                        start_end_time={start_end_time}
+                        hoverTime={scopeTime} />
+                    : <Button
+                        variant="contained"
+                        size="large"
+                        className="submit-button"
+                        onClick={() => handleOnSubmit()}
+                    >ส่งคำตอบ</Button>
+                }
                 {(dataFromBackend != null) ? handleScrollToResult() : null}
             </Container>
         </div>
