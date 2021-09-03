@@ -8,7 +8,7 @@ import Neutral from '../../assets/icons/neutral-icon.svg'
 import Sad from '../../assets/icons/sad-icon.svg'
 import QuestionnaireIcon from '../../assets/icons/questionnaire-icon.svg'
 
-import React from 'react';
+import { useState, useEffect } from 'react';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 import { Container } from 'react-bulma-components';
@@ -25,7 +25,35 @@ import Button from '@material-ui/core/Button';
 
 
 export function Report(props) {
-    const checkBox = props.location.state.checkBox;
+
+    const [checkBox, setCheckBox] = useState(0);
+    const [clickTime, setClickTime] = useState([]);
+    const [reactionTime, setReactionTime] = useState([]);
+    const [emotion, setEmotion] = useState();
+
+
+
+    useEffect(() => {
+        setCheckBox(props.location.state.checkBox);
+        setClickTime(props.location.state.clickTime);
+        setReactionTime(props.location.state.reactionTime);
+        setEmotion(props.location.state.emotion);
+
+        console.log(checkBox);
+        console.log(clickTime);
+        console.log(reactionTime);
+        console.log(emotion);
+
+    }, [
+        checkBox,
+        clickTime,
+        reactionTime,
+        emotion,
+        props.location.state.checkBox,
+        props.location.state.clickTime,
+        props.location.state.reactionTime,
+        props.location.state.emotion,
+    ]);
 
     function checkBoxSelected(type) {
         if (checkBox === type) {
@@ -33,6 +61,7 @@ export function Report(props) {
         }
         return CheckOff;
     }
+
     function checkBoxSelectedTextHighlight(type) {
         if (checkBox === type) {
             return true;
@@ -40,20 +69,45 @@ export function Report(props) {
         return false;
     }
 
+    function showEmotionIcon(emotePerQuestion) {
+        return (
+            <div className="emote-group-table">
+                {emotePerQuestion[0] ? <img alt='Angry' src={Angry} /> : <div />}
+                {emotePerQuestion[1] ? <img alt='Happy' src={Happy} /> : <div />}
+                {emotePerQuestion[2] ? <img alt='Neutral' src={Neutral} /> : <div />}
+                {emotePerQuestion[3] ? <img alt='Sad' src={Sad} /> : <div />}
+            </div>
+        );
+    }
+
+    function showClickTime(click) {
+        if (click === null) {
+            return 'NOT CLICKED';
+        }
+        return click;
+    }
+
+    function checkEmotionUndefined(n) {
+        if (typeof (emotion) !== 'undefined') {
+            return showEmotionIcon(emotion[n]);
+        }
+        return <div />;
+    }
+
     function createData(ItemQuestion, ClickTime, ReactionTime, Emotion) {
         return { ItemQuestion, ClickTime, ReactionTime, Emotion };
     }
 
     const rows = [
-        createData('Question 1', null, null, null),
-        createData('Question 2', null, null, null),
-        createData('Question 3', null, null, null),
-        createData('Question 4', null, null, null),
-        createData('Question 5', null, null, null),
-        createData('Question 6', null, null, null),
-        createData('Question 7', null, null, null),
-        createData('Question 8', null, null, null),
-        createData('Question 9', null, null, null),
+        createData('Question 1', showClickTime(clickTime[0]), (reactionTime[0] / 1000), checkEmotionUndefined(0)), //showEmotionIcon(emotion[0])),
+        createData('Question 2', showClickTime(clickTime[1]), (reactionTime[1] / 1000), checkEmotionUndefined(1)), //showEmotionIcon(emotion[1])),
+        createData('Question 3', showClickTime(clickTime[2]), (reactionTime[2] / 1000), checkEmotionUndefined(2)), //showEmotionIcon(emotion[2])),
+        createData('Question 4', showClickTime(clickTime[3]), (reactionTime[3] / 1000), checkEmotionUndefined(3)), //showEmotionIcon(emotion[3])),
+        createData('Question 5', showClickTime(clickTime[4]), (reactionTime[4] / 1000), checkEmotionUndefined(4)), //showEmotionIcon(emotion[4])),
+        createData('Question 6', showClickTime(clickTime[5]), (reactionTime[5] / 1000), checkEmotionUndefined(5)), //showEmotionIcon(emotion[5])),
+        createData('Question 7', showClickTime(clickTime[6]), (reactionTime[6] / 1000), checkEmotionUndefined(6)), //showEmotionIcon(emotion[6])),
+        createData('Question 8', showClickTime(clickTime[7]), (reactionTime[7] / 1000), checkEmotionUndefined(7)), //showEmotionIcon(emotion[7])),
+        createData('Question 9', showClickTime(clickTime[8]), (reactionTime[8] / 1000), checkEmotionUndefined(8)), //showEmotionIcon(emotion[8])),
     ];
 
     const useStyles = makeStyles({
@@ -79,6 +133,10 @@ export function Report(props) {
     const classes = useStyles();
     return (
         <Container className="report-container">
+            {
+
+
+            }
             <div className="space-top"></div>
             <div className="paper-container" id="report-paper">
                 <div className="form-header-box">

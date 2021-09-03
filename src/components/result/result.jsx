@@ -20,6 +20,9 @@ function Result(props) {
     const [backend_start_end_time, setBackend_start_end_time] = useState([]);
     const [total_emotion, setTotal_emotion] = useState([]);
 
+    const [groupTest, setGroupTest] = useState(1);
+    let history = useHistory();
+
     useEffect(() => {
         setScore(props.score);
         setStart_end_time(props.start_end_time);
@@ -49,13 +52,13 @@ function Result(props) {
         props.total_emotion,
     ]);
 
-    console.log(score);
-    console.log(backend_start_end_time);
-    console.log(total_emotion_time);
-    console.log(start_end_time);
-    console.log(hoverTime);
-    console.log(fontEndTimeStamp);
-    console.log(clickTime);
+    // console.log(score);
+    // console.log(backend_start_end_time);
+    // console.log(total_emotion_time);
+    // console.log(start_end_time);
+    // console.log(hoverTime);
+    // console.log(fontEndTimeStamp);
+    // console.log(clickTime);
 
     async function setData() {
         if (typeof (total_emotion_time) !== undefined) {
@@ -110,17 +113,13 @@ function Result(props) {
 
                 return true;
             });
-            allEmote = [...allEmote, emotePerQuestion];
+            allEmote.push(emotePerQuestion);
         });
     }
 
-    const [groupTest, setGroupTest] = useState(1);
-    let history = useHistory();
     const handleRadioChange = (event) => {
         setGroupTest(event.target.value);
     };
-
-    const responseFromBackend = props.data;
 
     const TextResults = () => {
 
@@ -151,8 +150,10 @@ function Result(props) {
         history.push({
             pathname: '/report',
             state: {
-                resultFromBackend: responseFromBackend,
                 checkBox: groupTest,
+                clickTime: clickTime,
+                reactionTime: hoverTime,
+                emotion: allEmote,
             },
         });
     }
