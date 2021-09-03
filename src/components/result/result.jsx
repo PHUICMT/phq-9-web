@@ -56,15 +56,13 @@ function Result(props) {
     console.log(hoverTime);
     console.log(fontEndTimeStamp);
     console.log(clickTime);
-    // console.log(total_emotion_time.angry);
 
-    function setData() {
+    async function setData() {
         if (typeof (total_emotion_time) !== undefined) {
-            //emoteTimeLength();
-            setDifferentTime(backend_start_end_time[0] - start_end_time[0]);
+            await setDifferentTime(backend_start_end_time[0] - start_end_time[0]);
+            await emoteTimeLength();
         }
     }
-    // setData();
 
     function emoteTimeLength() {
         allEmote = [];
@@ -148,7 +146,8 @@ function Result(props) {
         backgroundColor: result['color'] + '1c',
     };
 
-    function handleOnSendReport() {
+    async function handleOnSendReport() {
+        await setData();
         history.push({
             pathname: '/report',
             state: {
