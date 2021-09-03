@@ -56,14 +56,14 @@ export function Report(props) {
     ]);
 
     function checkBoxSelected(type) {
-        if (checkBox === type) {
+        if (checkBox == type) {
             return CheckOn;
         }
         return CheckOff;
     }
 
     function checkBoxSelectedTextHighlight(type) {
-        if (checkBox === type) {
+        if (checkBox == type) {
             return true;
         }
         return false;
@@ -84,11 +84,12 @@ export function Report(props) {
         if (click === null) {
             return 'NOT CLICKED';
         }
-        return click;
+        return click + ' o\'clock';
     }
 
     function checkEmotionUndefined(n) {
         if (typeof (emotion) !== 'undefined') {
+            console.log('OK!');
             return showEmotionIcon(emotion[n]);
         }
         return <div />;

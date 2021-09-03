@@ -41,6 +41,7 @@ function Result(props) {
         clickTime,
         backend_start_end_time,
         total_emotion,
+        groupTest,
         props.score,
         props.backendData,
         props.start_end_time,
@@ -51,14 +52,6 @@ function Result(props) {
         props.backend_start_end_time,
         props.total_emotion,
     ]);
-
-    // console.log(score);
-    // console.log(backend_start_end_time);
-    // console.log(total_emotion_time);
-    // console.log(start_end_time);
-    // console.log(hoverTime);
-    // console.log(fontEndTimeStamp);
-    // console.log(clickTime);
 
     async function setData() {
         if (typeof (total_emotion_time) !== undefined) {
@@ -77,40 +70,45 @@ function Result(props) {
         clickTime.forEach(() => {
             var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
 
-            hoverTime.map((start, end) => {
-                Angry.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[0] = true;
-                        return true;
-                    }
-                    return false;
-                });
-                Happy.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[1] = true;
-                        return true;
-                    }
-                    return false;
-                });
-                Neutral.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[2] = true;
-                        return true;
-                    }
-                    return false;
-                });
-                Sad.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[3] = true;
-                        return true;
-                    }
-                    return false;
-                });
-
+            fontEndTimeStamp.map((timeLength) => {
+                timeLength.map((list) => {
+                    var start = list[0];
+                    var end = list[1];
+                    Angry.map((timeStamp) => {
+                        var matchedTimeStamp = timeStamp - differentTime;
+                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                            emotePerQuestion[0] = true;
+                            return true;
+                        }
+                        return false;
+                    });
+                    Happy.map((timeStamp) => {
+                        var matchedTimeStamp = timeStamp - differentTime;
+                        console.log(start + ' ' + matchedTimeStamp + ' ' + end)
+                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                            emotePerQuestion[1] = true;
+                            return true;
+                        }
+                        return false;
+                    });
+                    Neutral.map((timeStamp) => {
+                        var matchedTimeStamp = timeStamp - differentTime;
+                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                            emotePerQuestion[2] = true;
+                            return true;
+                        }
+                        return false;
+                    });
+                    Sad.map((timeStamp) => {
+                        var matchedTimeStamp = timeStamp - differentTime;
+                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                            emotePerQuestion[3] = true;
+                            return true;
+                        }
+                        return false;
+                    });
+                    return true;
+                })
                 return true;
             });
             allEmote.push(emotePerQuestion);
@@ -176,19 +174,21 @@ function Result(props) {
                 <div className="group-selected">
                     <div className="title">
                         <h>อาสาสมัคร : </h>
+                        {console.log(groupTest)}
                     </div>
                     <div className="radio-box">
                         <Radio
-                            checked={groupTest === 1}
+                            checked={groupTest == 1}
                             onChange={handleRadioChange}
                             value={1}
                         />
-                        <h className={`${groupTest === 1 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(1)}>กลุ่มที่ 1</h>
+                        <h className={`${groupTest == 1 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(1)}>กลุ่มที่ 1</h>
                     </div>
 
                     <div className="radio-box">
+                        {console.log((groupTest == 2))}
                         <Radio
-                            checked={groupTest === 2}
+                            checked={groupTest == 2}
                             onChange={handleRadioChange}
                             value={2}
                         />
@@ -197,11 +197,11 @@ function Result(props) {
 
                     <div className="radio-box">
                         <Radio
-                            checked={groupTest === 3}
+                            checked={groupTest == 3}
                             onChange={handleRadioChange}
                             value={3}
                         />
-                        <h className={`${groupTest === 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มที่ 3</h>
+                        <h className={`${groupTest == 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มที่ 3</h>
                     </div>
                 </div>
 

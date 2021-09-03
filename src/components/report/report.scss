@@ -154,3 +154,9 @@
     }
   }
 }
+
+.emote-group-table {
+  display: grid;
+  column-gap: 12px;
+  grid-template-columns: 24px 24px 24px 24px;
+}
