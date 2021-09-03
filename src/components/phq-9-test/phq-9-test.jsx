@@ -34,7 +34,10 @@ let start_end_time = [-1, -1];
 let start_end_time = [getCurrentTime(), 0];
 >>>>>>> 📝 Change .gitignore
 
-let tempData = null;
+let dataFromBackend = null;
+
+let isLoading = false;
+let loaded = false;
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
@@ -93,7 +96,7 @@ const PHQTestComponent = () => {
                 type: mimeType,
             });
             recordedChunks = [];
-            VideoSenderService(blob, recordType, uuid);
+            return VideoSenderService(blob, recordType, uuid);
         };
         mediaRecorder.start(200);
     }
@@ -260,7 +263,7 @@ const PHQTestComponent = () => {
 
     return (
         <div>
-            <LoadingPopup open={isLoading} />
+            {/* <LoadingPopup open={isLoading} /> */}
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
@@ -272,7 +275,7 @@ const PHQTestComponent = () => {
                 {TestComp(7, "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานท่ีต้องใช้ความตั้งใจ")}
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
-
+                {console.log((dataFromBackend != null))}
                 {isResultSubmit && (dataFromBackend != null) ?
                     <Result
                         score={totalScore}
@@ -295,7 +298,7 @@ const PHQTestComponent = () => {
                         onClick={() => handleOnSubmit()}
                     >ส่งคำตอบ</Button>
                 }
-                {(dataFromBackend != null) ? handleScrollToResult() : null}
+                {/* {(dataFromBackend != null) ? handleScrollToResult() : null} */}
             </Container>
         </div>
     );
