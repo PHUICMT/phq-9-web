@@ -57,11 +57,6 @@ const PHQTestComponent = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // useEffect(() => {
-    //     window.scrollTo(0, 0);
-
-    // }, [location]);
-
     const VideoSenderService = function (blob, recordType, uuid) {
         setIsLoading(true);
         var xhr = new XMLHttpRequest();
@@ -196,7 +191,7 @@ const PHQTestComponent = () => {
                 setOnHover(false);
                 var sumTime = getCurrentTime() - startHover[index - 1];
                 scopeTime[index - 1] += sumTime;
-                // fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
+                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
             }
         }
         const formContainer = (n) => {
@@ -276,10 +271,12 @@ const PHQTestComponent = () => {
                 {isResultSubmit && (dataFromBackend != null) ?
                     <Result
                         score={totalScore}
-                        // backendData={dataFromBackend}
+                        total_emotion={dataFromBackend.total_emotion}
+                        backend_start_end_time={dataFromBackend.start_end_time}
+                        total_emotion_time={dataFromBackend.total_emotion_time}
                         start_end_time={start_end_time}
-                        // hoverTime={scopeTime}
-                        // fontEndTimeStamp={fontEndTimeStamp}
+                        hoverTime={scopeTime}
+                        fontEndTimeStamp={fontEndTimeStamp}
                         clickTime={clickTime}
                     />
 

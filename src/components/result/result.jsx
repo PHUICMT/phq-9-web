@@ -39,7 +39,7 @@ function Result(props) {
         backend_start_end_time,
         total_emotion,
         props.score,
-        props.data,
+        props.backendData,
         props.start_end_time,
         props.total_emotion_time,
         props.hoverTime,
@@ -47,16 +47,16 @@ function Result(props) {
         props.clickTime,
         props.backend_start_end_time,
         props.total_emotion,
-
     ]);
 
     console.log(score);
-    // console.log(backendData);
-    // console.log(start_end_time);
-    // console.log(total_emotion_time);
+    console.log(backend_start_end_time);
+    console.log(total_emotion_time);
+    console.log(start_end_time);
+    console.log(hoverTime);
+    console.log(fontEndTimeStamp);
+    console.log(clickTime);
     // console.log(total_emotion_time.angry);
-    // console.log(hoverTime);
-    // console.log(fontEndTimeStamp);
 
     function setData() {
         if (typeof (total_emotion_time) !== undefined) {
