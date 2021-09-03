@@ -17,8 +17,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
-import $ from "jquery";
 import moment from 'moment';
+import axios from 'axios';
 
 const questionnaire_uuid = uuidv4();
 
@@ -33,6 +33,8 @@ let start_end_time = [-1, -1];
 =======
 let start_end_time = [getCurrentTime(), 0];
 >>>>>>> 📝 Change .gitignore
+
+let tempData = null;
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
@@ -73,29 +75,10 @@ const PHQTestComponent = () => {
         video.append("uuid", uuid);
         video.append("blob", blob);
 
-        return $.ajax({
-            type: "POST",
-            url: `/upload-recorded-${recordType}`,
-            data: video,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                if (recordType.includes("webcam")) {
-                    setDataFromBackend(data);
-                    setIsLoading(false);
-                }
-            }
-        });
-    };
+        AxiosSender(video, recordType);
 
-    function stopRecord() {
-        if (allowsRecord['screenToggleAllows']) {
-            streamScreen.getTracks().forEach((track) => track.stop());
-        }
-        if (allowsRecord['webcamToggleAllows']) {
-            streamWebcam.getTracks().forEach((track) => track.stop());
-        }
-    }
+        setIsLoading(false);
+    };
 
     function handleRecord({ stream, mimeType }, recordType, uuid) {
         let recordedChunks = [];
@@ -110,7 +93,7 @@ const PHQTestComponent = () => {
                 type: mimeType,
             });
             recordedChunks = [];
-            return VideoSenderService(blob, recordType, uuid);
+            VideoSenderService(blob, recordType, uuid);
         };
         mediaRecorder.start(200);
     }
@@ -135,6 +118,15 @@ const PHQTestComponent = () => {
         handleRecord({ stream, mimeType }, "screen", uuid);
     }
 
+    function stopRecord() {
+        if (allowsRecord['screenToggleAllows']) {
+            streamScreen.getTracks().forEach((track) => track.stop());
+        }
+        if (allowsRecord['webcamToggleAllows']) {
+            streamWebcam.getTracks().forEach((track) => track.stop());
+        }
+    }
+
 
     const SVGNo = (index) => {
         return (
@@ -146,6 +138,7 @@ const PHQTestComponent = () => {
 
     }
 
+<<<<<<< HEAD
     function Recording() {
         var temp_backend = null;
         useEffect(() => {
@@ -163,6 +156,8 @@ const PHQTestComponent = () => {
         return temp_backend;
     };
 
+=======
+>>>>>>> 📝 Change post video by axios
     const TestComp = (index, text) => {
         var className = index % 2;
         const [value, setValue] = useState(0);
@@ -266,7 +261,6 @@ const PHQTestComponent = () => {
     return (
         <div>
             <LoadingPopup open={isLoading} />
-            <Recording />
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
