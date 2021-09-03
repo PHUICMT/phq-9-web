@@ -8,6 +8,7 @@ import Radio from '@material-ui/core/Radio';
 import { useHistory } from 'react-router-dom'
 
 let allEmote = [];
+let differentTime = 0;
 
 function Result(props) {
     const [score, setScore] = useState();
@@ -16,7 +17,6 @@ function Result(props) {
     const [hoverTime, setHoverTime] = useState([]);
     const [fontEndTimeStamp, setFontEndTimeStamp] = useState([]);
     const [clickTime, setClickTime] = useState([]);
-    const [differentTime, setDifferentTime] = useState(0);
     const [backend_start_end_time, setBackend_start_end_time] = useState([]);
     const [total_emotion, setTotal_emotion] = useState([]);
 
@@ -54,20 +54,21 @@ function Result(props) {
     ]);
 
     async function setData() {
-        if (typeof (total_emotion_time) !== undefined) {
-            await setDifferentTime(backend_start_end_time[0] - start_end_time[0]);
+        if (typeof (total_emotion_time) !== 'undefined') {
+            var length = (backend_start_end_time[0] - start_end_time[0]);
+            differentTime = length;
             await emoteTimeLength();
         }
     }
 
-    function emoteTimeLength() {
+    async function emoteTimeLength() {
         allEmote = [];
         var Angry = total_emotion_time.angry;
         var Happy = total_emotion_time.happy;
         var Neutral = total_emotion_time.neutral;
         var Sad = total_emotion_time.sad;
 
-        clickTime.forEach(() => {
+        await clickTime.forEach((dummy, i) => {
             var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
 
             fontEndTimeStamp.map((timeLength) => {
@@ -76,41 +77,35 @@ function Result(props) {
                     var end = list[1];
                     Angry.map((timeStamp) => {
                         var matchedTimeStamp = timeStamp - differentTime;
-                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        if ((matchedTimeStamp > start) && (matchedTimeStamp < end)) {
                             emotePerQuestion[0] = true;
                             return true;
                         }
-                        return false;
                     });
                     Happy.map((timeStamp) => {
                         var matchedTimeStamp = timeStamp - differentTime;
-                        console.log(start + ' ' + matchedTimeStamp + ' ' + end)
-                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        if ((matchedTimeStamp > start) && (matchedTimeStamp < end)) {
                             emotePerQuestion[1] = true;
                             return true;
                         }
-                        return false;
                     });
                     Neutral.map((timeStamp) => {
                         var matchedTimeStamp = timeStamp - differentTime;
-                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        if ((matchedTimeStamp > start) && (matchedTimeStamp < end)) {
                             emotePerQuestion[2] = true;
                             return true;
                         }
-                        return false;
                     });
                     Sad.map((timeStamp) => {
                         var matchedTimeStamp = timeStamp - differentTime;
-                        if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        if ((matchedTimeStamp > start) && (matchedTimeStamp < end)) {
                             emotePerQuestion[3] = true;
                             return true;
                         }
-                        return false;
                     });
-                    return true;
                 })
-                return true;
             });
+            console.log('ข้อ [' + i + '] -> ' + emotePerQuestion);
             allEmote.push(emotePerQuestion);
         });
     }
@@ -145,7 +140,7 @@ function Result(props) {
 
     async function handleOnSendReport() {
         await setData();
-        history.push({
+        await history.push({
             pathname: '/report',
             state: {
                 checkBox: groupTest,
@@ -174,7 +169,6 @@ function Result(props) {
                 <div className="group-selected">
                     <div className="title">
                         <h>อาสาสมัคร : </h>
-                        {console.log(groupTest)}
                     </div>
                     <div className="radio-box">
                         <Radio
@@ -186,13 +180,12 @@ function Result(props) {
                     </div>
 
                     <div className="radio-box">
-                        {console.log((groupTest == 2))}
                         <Radio
                             checked={groupTest == 2}
                             onChange={handleRadioChange}
                             value={2}
                         />
-                        <h className={`${groupTest === 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มที่ 2</h>
+                        <h className={`${groupTest == 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มที่ 2</h>
                     </div>
 
                     <div className="radio-box">

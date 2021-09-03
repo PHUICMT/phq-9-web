@@ -38,12 +38,6 @@ export function Report(props) {
         setClickTime(props.location.state.clickTime);
         setReactionTime(props.location.state.reactionTime);
         setEmotion(props.location.state.emotion);
-
-        console.log(checkBox);
-        console.log(clickTime);
-        console.log(reactionTime);
-        console.log(emotion);
-
     }, [
         checkBox,
         clickTime,
@@ -84,12 +78,11 @@ export function Report(props) {
         if (click === null) {
             return 'NOT CLICKED';
         }
-        return click + ' o\'clock';
+        return click + ' O\'clock';
     }
 
     function checkEmotionUndefined(n) {
         if (typeof (emotion) !== 'undefined') {
-            console.log('OK!');
             return showEmotionIcon(emotion[n]);
         }
         return <div />;
@@ -134,10 +127,6 @@ export function Report(props) {
     const classes = useStyles();
     return (
         <Container className="report-container">
-            {
-
-
-            }
             <div className="space-top"></div>
             <div className="paper-container" id="report-paper">
                 <div className="form-header-box">
