@@ -7,30 +7,114 @@ import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import { useHistory } from 'react-router-dom'
 
-
+let allEmote = [];
 
 function Result(props) {
-    const [score, setScore] = useState([]);
-    const [data, setData] = useState([]);
+    const [score, setScore] = useState();
     const [start_end_time, setStart_end_time] = useState([]);
+    const [total_emotion_time, setTotal_emotion_time] = useState([]);
     const [hoverTime, setHoverTime] = useState([]);
+    const [fontEndTimeStamp, setFontEndTimeStamp] = useState([]);
+    const [clickTime, setClickTime] = useState([]);
+    const [differentTime, setDifferentTime] = useState(0);
+    const [backend_start_end_time, setBackend_start_end_time] = useState([]);
+    const [total_emotion, setTotal_emotion] = useState([]);
 
     useEffect(() => {
         setScore(props.score);
-        setData(props.data);
         setStart_end_time(props.start_end_time);
+        setTotal_emotion_time(props.total_emotion_time);
         setHoverTime(props.hoverTime);
+        setFontEndTimeStamp(props.fontEndTimeStamp);
+        setClickTime(props.clickTime);
+        setBackend_start_end_time(props.backend_start_end_time);
+        setTotal_emotion(props.total_emotion);
     }, [
         score,
-        data,
         start_end_time,
+        total_emotion_time,
         hoverTime,
+        fontEndTimeStamp,
+        clickTime,
+        backend_start_end_time,
+        total_emotion,
         props.score,
         props.data,
         props.start_end_time,
+        props.total_emotion_time,
         props.hoverTime,
+        props.fontEndTimeStamp,
+        props.clickTime,
+        props.backend_start_end_time,
+        props.total_emotion,
 
-    ])
+    ]);
+
+    console.log(score);
+    // console.log(backendData);
+    // console.log(start_end_time);
+    // console.log(total_emotion_time);
+    // console.log(total_emotion_time.angry);
+    // console.log(hoverTime);
+    // console.log(fontEndTimeStamp);
+
+    function setData() {
+        if (typeof (total_emotion_time) !== undefined) {
+            //emoteTimeLength();
+            setDifferentTime(backend_start_end_time[0] - start_end_time[0]);
+        }
+    }
+    // setData();
+
+    function emoteTimeLength() {
+        allEmote = [];
+        var Angry = total_emotion_time.angry;
+        var Happy = total_emotion_time.happy;
+        var Neutral = total_emotion_time.neutral;
+        var Sad = total_emotion_time.sad;
+
+        clickTime.forEach(() => {
+            var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
+
+            hoverTime.map((start, end) => {
+                Angry.map((timeStamp) => {
+                    var matchedTimeStamp = timeStamp - differentTime;
+                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        emotePerQuestion[0] = true;
+                        return true;
+                    }
+                    return false;
+                });
+                Happy.map((timeStamp) => {
+                    var matchedTimeStamp = timeStamp - differentTime;
+                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        emotePerQuestion[1] = true;
+                        return true;
+                    }
+                    return false;
+                });
+                Neutral.map((timeStamp) => {
+                    var matchedTimeStamp = timeStamp - differentTime;
+                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        emotePerQuestion[2] = true;
+                        return true;
+                    }
+                    return false;
+                });
+                Sad.map((timeStamp) => {
+                    var matchedTimeStamp = timeStamp - differentTime;
+                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
+                        emotePerQuestion[3] = true;
+                        return true;
+                    }
+                    return false;
+                });
+
+                return true;
+            });
+            allEmote = [...allEmote, emotePerQuestion];
+        });
+    }
 
     const [groupTest, setGroupTest] = useState(1);
     let history = useHistory();

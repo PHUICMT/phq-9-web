@@ -24,9 +24,11 @@ const questionnaire_uuid = uuidv4();
 
 let clickTime = [null, null, null, null, null, null, null, null, null];
 let scopeTime = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let fontEndTimeStamp = [[], [], [], [], [], [], [], [], []];
 let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
+let start_end_time = [getCurrentTime(), 0];
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
@@ -42,7 +44,10 @@ const PHQTestComponent = () => {
 
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
+
     const [dataFromBackend, setDataFromBackend] = useState(null);
+
+
     const allowsRecord = useState(location.state)[0];
 
     const [isScreenRecord, setIsScreenRecord] = useState(false);
@@ -51,12 +56,11 @@ const PHQTestComponent = () => {
     const [streamScreen, setStreamScreen] = useState(null);
 
     const [isLoading, setIsLoading] = useState(false);
-    let start_end_time = [getCurrentTime(), 0];
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
+    // useEffect(() => {
+    //     window.scrollTo(0, 0);
 
-    }, [location]);
+    // }, [location]);
 
     const VideoSenderService = function (blob, recordType, uuid) {
         setIsLoading(true);
@@ -155,7 +159,7 @@ const PHQTestComponent = () => {
                 setIsVideoRecord(true);
                 recordVideo(questionnaire_uuid);
             }
-        });
+        }, []);
         return temp_backend;
     };
 
@@ -192,6 +196,7 @@ const PHQTestComponent = () => {
                 setOnHover(false);
                 var sumTime = getCurrentTime() - startHover[index - 1];
                 scopeTime[index - 1] += sumTime;
+                // fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
             }
         }
         const formContainer = (n) => {
@@ -271,9 +276,13 @@ const PHQTestComponent = () => {
                 {isResultSubmit && (dataFromBackend != null) ?
                     <Result
                         score={totalScore}
-                        data={dataFromBackend}
+                        // backendData={dataFromBackend}
                         start_end_time={start_end_time}
-                        hoverTime={scopeTime} />
+                        // hoverTime={scopeTime}
+                        // fontEndTimeStamp={fontEndTimeStamp}
+                        clickTime={clickTime}
+                    />
+
                     : <Button
                         variant="contained"
                         size="large"
