@@ -40,10 +40,7 @@ function Result(props) {
         clickTime,
         backend_start_end_time,
         total_emotion,
-<<<<<<< HEAD
         groupTest,
-=======
->>>>>>> 📝 Change .gitignore
         props.score,
         props.backendData,
         props.start_end_time,
@@ -53,7 +50,6 @@ function Result(props) {
         props.clickTime,
         props.backend_start_end_time,
         props.total_emotion,
-<<<<<<< HEAD
     ]);
 
     async function setData() {
@@ -63,34 +59,12 @@ function Result(props) {
     }
 
     async function emoteTimeLength() {
-=======
-
-    ]);
-
-    // console.log(score);
-    // console.log(backendData);
-    // console.log(start_end_time);
-    // console.log(total_emotion_time);
-    // console.log(total_emotion_time.angry);
-    // console.log(hoverTime);
-    // console.log(fontEndTimeStamp);
-    function setData() {
-        if (typeof (total_emotion_time) !== undefined) {
-            emoteTimeLength();
-            setDifferentTime(backend_start_end_time[0] - start_end_time[0]);
-        }
-    }
-    setData();
-
-    function emoteTimeLength() {
->>>>>>> 📝 Change .gitignore
         allEmote = [];
         var Angry = total_emotion_time.angry;
         var Happy = total_emotion_time.happy;
         var Neutral = total_emotion_time.neutral;
         var Sad = total_emotion_time.sad;
 
-<<<<<<< HEAD
         await clickTime.forEach((dummy, i) => {
             var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
 
@@ -133,48 +107,6 @@ function Result(props) {
             });
             allEmote.push(emotePerQuestion);
             emotePerQuestion = [false, false, false, false];
-=======
-        clickTime.forEach(() => {
-            var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
-
-            hoverTime.map((start, end) => {
-                Angry.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[0] = true;
-                        return true;
-                    }
-                    return false;
-                });
-                Happy.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[1] = true;
-                        return true;
-                    }
-                    return false;
-                });
-                Neutral.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[2] = true;
-                        return true;
-                    }
-                    return false;
-                });
-                Sad.map((timeStamp) => {
-                    var matchedTimeStamp = timeStamp - differentTime;
-                    if (matchedTimeStamp > start && matchedTimeStamp < end) {
-                        emotePerQuestion[3] = true;
-                        return true;
-                    }
-                    return false;
-                });
-
-                return true;
-            });
-            allEmote = [...allEmote, emotePerQuestion];
->>>>>>> 📝 Change .gitignore
         });
     }
 

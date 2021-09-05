@@ -141,7 +141,6 @@ const PHQTestComponent = () => {
 
     }
 
-<<<<<<< HEAD
     function Recording() {
         var temp_backend = null;
         useEffect(() => {
@@ -159,8 +158,6 @@ const PHQTestComponent = () => {
         return temp_backend;
     };
 
-=======
->>>>>>> 📝 Change post video by axios
     const TestComp = (index, text) => {
         var className = index % 2;
         const [value, setValue] = useState(0);

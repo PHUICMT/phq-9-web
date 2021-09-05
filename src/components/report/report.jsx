@@ -32,11 +32,8 @@ export function Report(props) {
     const [reactionTime, setReactionTime] = useState([]);
     const [emotion, setEmotion] = useState();
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 📝 Change .gitignore
     useEffect(() => {
         setCheckBox(props.location.state.checkBox);
         setClickTime(props.location.state.clickTime);
@@ -78,7 +75,6 @@ export function Report(props) {
         );
     }
 
-<<<<<<< HEAD
     function showClickTime(click) {
         if (click === null) {
             return 'NOT CLICKED';
@@ -93,14 +89,11 @@ export function Report(props) {
         return <div />;
     }
 
-=======
->>>>>>> 📝 Change .gitignore
     function createData(ItemQuestion, ClickTime, ReactionTime, Emotion) {
         return { ItemQuestion, ClickTime, ReactionTime, Emotion };
     }
 
     const rows = [
-<<<<<<< HEAD
         createData('Question 1', showClickTime(clickTime[0]), (reactionTime[0] / 1000), checkEmotionUndefined(0)), //showEmotionIcon(emotion[0])),
         createData('Question 2', showClickTime(clickTime[1]), (reactionTime[1] / 1000), checkEmotionUndefined(1)), //showEmotionIcon(emotion[1])),
         createData('Question 3', showClickTime(clickTime[2]), (reactionTime[2] / 1000), checkEmotionUndefined(2)), //showEmotionIcon(emotion[2])),
@@ -110,17 +103,6 @@ export function Report(props) {
         createData('Question 7', showClickTime(clickTime[6]), (reactionTime[6] / 1000), checkEmotionUndefined(6)), //showEmotionIcon(emotion[6])),
         createData('Question 8', showClickTime(clickTime[7]), (reactionTime[7] / 1000), checkEmotionUndefined(7)), //showEmotionIcon(emotion[7])),
         createData('Question 9', showClickTime(clickTime[8]), (reactionTime[8] / 1000), checkEmotionUndefined(8)), //showEmotionIcon(emotion[8])),
-=======
-        createData('Question 1', clickTime[0], (reactionTime[0] / 1000), showEmotionIcon(emotion[0])),
-        createData('Question 2', clickTime[1], (reactionTime[1] / 1000), showEmotionIcon(emotion[1])),
-        createData('Question 3', clickTime[2], (reactionTime[2] / 1000), showEmotionIcon(emotion[2])),
-        createData('Question 4', clickTime[3], (reactionTime[3] / 1000), showEmotionIcon(emotion[3])),
-        createData('Question 5', clickTime[4], (reactionTime[4] / 1000), showEmotionIcon(emotion[4])),
-        createData('Question 6', clickTime[5], (reactionTime[5] / 1000), showEmotionIcon(emotion[5])),
-        createData('Question 7', clickTime[6], (reactionTime[6] / 1000), showEmotionIcon(emotion[6])),
-        createData('Question 8', clickTime[7], (reactionTime[7] / 1000), showEmotionIcon(emotion[7])),
-        createData('Question 9', clickTime[8], (reactionTime[8] / 1000), showEmotionIcon(emotion[8])),
->>>>>>> 📝 Change .gitignore
     ];
 
     const useStyles = makeStyles({
