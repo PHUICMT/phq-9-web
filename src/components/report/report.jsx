@@ -78,7 +78,7 @@ export function Report(props) {
         if (click === null) {
             return 'NOT CLICKED';
         }
-        return click + ' O\'clock';
+        return click + ' น.';
     }
 
     function checkEmotionUndefined(n) {

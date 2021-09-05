@@ -28,7 +28,7 @@ let fontEndTimeStamp = [[], [], [], [], [], [], [], [], []];
 let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
-let start_end_time = [getCurrentTime(), 0];
+let start_end_time = [-1, -1];
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
@@ -95,7 +95,6 @@ const PHQTestComponent = () => {
     function handleRecord({ stream, mimeType }, recordType, uuid) {
         let recordedChunks = [];
         const mediaRecorder = new MediaRecorder(stream);
-
         mediaRecorder.ondataavailable = function (e) {
             if (e.data.size > 0) {
                 recordedChunks.push(e.data);
@@ -153,6 +152,7 @@ const PHQTestComponent = () => {
             if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
                 setIsVideoRecord(true);
                 recordVideo(questionnaire_uuid);
+                start_end_time[0] = getCurrentTime();
             }
         }, []);
         return temp_backend;
@@ -189,9 +189,11 @@ const PHQTestComponent = () => {
         const handleOnMouseLeave = () => {
             if (onHover) {
                 setOnHover(false);
-                var sumTime = getCurrentTime() - startHover[index - 1];
+                var before = (startHover[index - 1] - start_end_time[0]);
+                var now = (getCurrentTime() - start_end_time[0]);
+                var sumTime = now - before;
                 scopeTime[index - 1] += sumTime;
-                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
+                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [before, now]];
             }
         }
         const formContainer = (n) => {
@@ -229,10 +231,10 @@ const PHQTestComponent = () => {
     }
 
     function handleOnSubmit() {
+        start_end_time[1] = getCurrentTime();
         const sum = totalValues.reduce((result, number) => result + number);
         setTotalScore(sum);
         stopRecord();
-        start_end_time[1] = getCurrentTime();
         setIsResultSubmit(true);
         ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
     }
