@@ -29,6 +29,7 @@ let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
 <<<<<<< HEAD
+<<<<<<< HEAD
 let start_end_time = [-1, -1];
 =======
 let start_end_time = [getCurrentTime(), 0];
@@ -38,6 +39,11 @@ let dataFromBackend = null;
 
 let isLoading = false;
 let loaded = false;
+=======
+let start_end_time = [getCurrentTime(), 0];
+
+let tempData = null;
+>>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
 
 try {
     QuestionnaireSenderService(questionnaire_uuid);
@@ -65,8 +71,51 @@ const PHQTestComponent = () => {
     const [streamScreen, setStreamScreen] = useState(null);
 
     const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
+=======
 
-    const VideoSenderService = function (blob, recordType, uuid) {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
+>>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
+
+    useEffect(() => {
+        if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
+            setIsScreenRecord(true);
+            recordScreen(questionnaire_uuid);
+        }
+
+        if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
+            setIsVideoRecord(true);
+            recordVideo(questionnaire_uuid);
+        }
+    });
+
+    const AxiosSender = (video, recordType) => {
+        const sendRequest = () => {
+            return axios.post(`/upload-recorded-${recordType}`, video, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            }).then(response => {
+                return response.data;
+            })
+        }
+
+        sendRequest().then(
+            (response) => {
+                if (recordType.includes('webcam')) {
+                    // setDataFromBackend(response);
+                    tempData = response;
+                    console.log(tempData);
+                    return response;
+                }
+            }
+        ).catch((e) => console.log(e));
+    }
+
+    function VideoSenderService(blob, recordType, uuid) {
+
         setIsLoading(true);
         var xhr = new XMLHttpRequest();
         xhr.onload = function (e) {
@@ -96,7 +145,7 @@ const PHQTestComponent = () => {
                 type: mimeType,
             });
             recordedChunks = [];
-            return VideoSenderService(blob, recordType, uuid);
+            VideoSenderService(blob, recordType, uuid);
         };
         mediaRecorder.start(200);
     }
@@ -141,6 +190,7 @@ const PHQTestComponent = () => {
 
     }
 
+<<<<<<< HEAD
     function Recording() {
         var temp_backend = null;
         useEffect(() => {
@@ -158,6 +208,8 @@ const PHQTestComponent = () => {
         return temp_backend;
     };
 
+=======
+>>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
     const TestComp = (index, text) => {
         var className = index % 2;
         const [value, setValue] = useState(0);
@@ -194,10 +246,14 @@ const PHQTestComponent = () => {
                 var sumTime = now - before;
                 scopeTime[index - 1] += sumTime;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [before, now]];
 =======
                 fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
 >>>>>>> 📝 Change .gitignore
+=======
+                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
+>>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
             }
         }
         const formContainer = (n) => {
@@ -260,7 +316,11 @@ const PHQTestComponent = () => {
 
     return (
         <div>
+<<<<<<< HEAD
             {/* <LoadingPopup open={isLoading} /> */}
+=======
+            <LoadingPopup open={isLoading} />
+>>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
@@ -285,9 +345,12 @@ const PHQTestComponent = () => {
                         clickTime={clickTime}
                     />
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 📝 Change .gitignore
+=======
+>>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
                     : <Button
                         variant="contained"
                         size="large"

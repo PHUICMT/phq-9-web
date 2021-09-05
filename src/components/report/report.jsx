@@ -71,7 +71,7 @@ export function Report(props) {
                 {emotePerQuestion[1] ? <img alt='Happy' src={Happy} /> : <div />}
                 {emotePerQuestion[2] ? <img alt='Neutral' src={Neutral} /> : <div />}
                 {emotePerQuestion[3] ? <img alt='Sad' src={Sad} /> : <div />}
-            </div>
+            </div >
         );
     }
 
