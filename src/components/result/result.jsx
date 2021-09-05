@@ -54,12 +54,6 @@ function Result(props) {
 
     async function setData() {
         if (typeof (total_emotion_time) !== 'undefined') {
-            // console.log('Backend: ' + backend_start_end_time);
-            // console.log('Fontend: ' + start_end_time);
-            // console.log('Backend Time: ' + (backend_start_end_time[(backend_start_end_time.length - 1)] - backend_start_end_time[0]));
-            // console.log('FontEnd Time: ' + (start_end_time[1] - start_end_time[0]));
-            // console.log('Backend End Time: ' + (backend_start_end_time[(backend_start_end_time.length - 1)]));
-            // console.log('Fontend End Time: ' + start_end_time[1]);
             await emoteTimeLength();
         }
     }
@@ -70,13 +64,9 @@ function Result(props) {
         var Happy = total_emotion_time.happy;
         var Neutral = total_emotion_time.neutral;
         var Sad = total_emotion_time.sad;
-        // console.log(total_emotion_time);
 
         await clickTime.forEach((dummy, i) => {
             var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
-            // console.log('**********************************************เริ่ม ข้อ [' + i + ']')
-            // console.log(fontEndTimeStamp);
-            // console.log('เวลาชี้เมาส์ข้อ ข้อ [' + i + '] -> ' + fontEndTimeStamp[i]);
 
             fontEndTimeStamp[i].map((timeLength) => {
 
@@ -90,45 +80,32 @@ function Result(props) {
                 }
 
                 Angry.every((timeStamp) => {
-                    // console.log('Angry timeStamp: ' + timeStamp);
-                    // console.log('Angry| ' + start + ' < ' + timeStamp + ' < ' + end)
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[0] = true;
-                        // console.log('Angry ข้อ [' + i + '] -> ' + emotePerQuestion[0]);
                         return true;
                     }
                 });
                 Happy.every((timeStamp) => {
-                    // console.log('Happy timeStamp: ' + timeStamp);
-                    // console.log('Happy| ' + start + ' < ' + timeStamp + ' < ' + end)
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[1] = true;
-                        // console.log('Happy ข้อ [' + i + '] -> ' + emotePerQuestion[1]);
                         return true;
                     }
                 });
                 Neutral.every((timeStamp) => {
-                    // console.log('Neutral timeStamp: ' + timeStamp);
-                    // console.log('Neutral| ' + start + ' < ' + timeStamp + ' < ' + end)
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[2] = true;
-                        // console.log('Neutral ข้อ [' + i + '] -> ' + emotePerQuestion[2]);
                         return true;
                     }
                 });
                 Sad.every((timeStamp) => {
-                    // console.log('Sad timeStamp: ' + timeStamp);
-                    // console.log('Sad| ' + start + ' < ' + timeStamp + ' < ' + end)
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[3] = true;
-                        // console.log('Sad ข้อ [' + i + '] -> ' + emotePerQuestion[3]);
                         return true;
                     }
                 });
 
             });
             allEmote.push(emotePerQuestion);
-            // console.log('*************************จบ ข้อ [' + i + '] -> ' + emotePerQuestion);
             emotePerQuestion = [false, false, false, false];
         });
     }
