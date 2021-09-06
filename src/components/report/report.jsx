@@ -2,11 +2,12 @@ import "./report.scss";
 import Download from '../../assets/icons/download-icon.svg'
 import CheckOn from '../../assets/icons/check-box-on.svg'
 import CheckOff from '../../assets/icons/check-box-off.svg'
+import QuestionnaireIcon from '../../assets/icons/questionnaire-icon.svg'
+
 import Angry from '../../assets/icons/angry-icon.svg'
 import Happy from '../../assets/icons/happy-icon.svg'
 import Neutral from '../../assets/icons/neutral-icon.svg'
 import Sad from '../../assets/icons/sad-icon.svg'
-import QuestionnaireIcon from '../../assets/icons/questionnaire-icon.svg'
 
 import { useState, useEffect } from 'react';
 import domtoimage from 'dom-to-image';
@@ -70,7 +71,7 @@ export function Report(props) {
                 {emotePerQuestion[1] ? <img alt='Happy' src={Happy} /> : <div />}
                 {emotePerQuestion[2] ? <img alt='Neutral' src={Neutral} /> : <div />}
                 {emotePerQuestion[3] ? <img alt='Sad' src={Sad} /> : <div />}
-            </div>
+            </div >
         );
     }
 
