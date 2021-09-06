@@ -67,7 +67,6 @@ function Result(props) {
 
         await clickTime.forEach((dummy, i) => {
             var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
-
             fontEndTimeStamp[i].map((timeLength) => {
 
                 var start = timeLength[0];
@@ -79,28 +78,24 @@ function Result(props) {
                     end = Math.abs(end - start_end_time[0]);
                 }
 
-                Angry.every((timeStamp) => {
+                Angry.map((timeStamp) => {
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[0] = true;
-                        return true;
                     }
                 });
-                Happy.every((timeStamp) => {
+                Happy.map((timeStamp) => {
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[1] = true;
-                        return true;
                     }
                 });
-                Neutral.every((timeStamp) => {
+                Neutral.map((timeStamp) => {
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[2] = true;
-                        return true;
                     }
                 });
-                Sad.every((timeStamp) => {
+                Sad.map((timeStamp) => {
                     if ((timeStamp > start) && (timeStamp < end)) {
                         emotePerQuestion[3] = true;
-                        return true;
                     }
                 });
 
