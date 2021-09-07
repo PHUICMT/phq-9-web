@@ -17,8 +17,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
+import $ from "jquery";
 import moment from 'moment';
-import axios from 'axios';
 
 const questionnaire_uuid = uuidv4();
 
@@ -29,7 +29,6 @@ let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
 let behavior = ['', '', '', '', '', '', '', '', ''];
-
 let start_end_time = [-1, -1];
 
 let isChecked = [false, false, false, false, false, false, false, false, false];
@@ -67,41 +66,6 @@ const PHQTestComponent = () => {
         window.scrollTo(0, 0);
     }, [location]);
 
-
-    useEffect(() => {
-        if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
-            setIsScreenRecord(true);
-            recordScreen(questionnaire_uuid);
-        }
-
-        if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
-            setIsVideoRecord(true);
-            recordVideo(questionnaire_uuid);
-        }
-    });
-
-    const AxiosSender = (video, recordType) => {
-        const sendRequest = () => {
-            return axios.post(`/upload-recorded-${recordType}`, video, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            }).then(response => {
-                return response.data;
-            })
-        }
-
-        sendRequest().then(
-            (response) => {
-                if (recordType.includes('webcam')) {
-                    tempData = response;
-                    return response;
-                }
-            }
-        ).catch((e) => console.log(e));
-    }
-
-
     const VideoSenderService = function (blob, recordType, uuid) {
         setIsLoading(true);
         var xhr = new XMLHttpRequest();
@@ -114,10 +78,28 @@ const PHQTestComponent = () => {
         video.append("uuid", uuid);
         video.append("blob", blob);
 
-        AxiosSender(video, recordType);
-
-        setIsLoading(false);
+        return $.ajax({
+            type: "POST",
+            url: `/upload-recorded-${recordType}`,
+            data: video,
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            if (recordType.includes("webcam")) {
+                setDataFromBackend(data);
+                setIsLoading(false);
+            }
+        });
     };
+
+    function stopRecord() {
+        if (allowsRecord['screenToggleAllows']) {
+            streamScreen.getTracks().forEach((track) => track.stop());
+        }
+        if (allowsRecord['webcamToggleAllows']) {
+            streamWebcam.getTracks().forEach((track) => track.stop());
+        }
+    }
 
     function handleRecord({ stream, mimeType }, recordType, uuid) {
         let recordedChunks = [];
@@ -132,7 +114,7 @@ const PHQTestComponent = () => {
                 type: mimeType,
             });
             recordedChunks = [];
-            VideoSenderService(blob, recordType, uuid);
+            return VideoSenderService(blob, recordType, uuid);
         };
         mediaRecorder.start(200);
     }
@@ -155,15 +137,6 @@ const PHQTestComponent = () => {
         });
         setStreamScreen(stream);
         handleRecord({ stream, mimeType }, "screen", uuid);
-    }
-
-    function stopRecord() {
-        if (allowsRecord['screenToggleAllows']) {
-            streamScreen.getTracks().forEach((track) => track.stop());
-        }
-        if (allowsRecord['webcamToggleAllows']) {
-            streamWebcam.getTracks().forEach((track) => track.stop());
-        }
     }
 
 
@@ -302,6 +275,7 @@ const PHQTestComponent = () => {
     return (
         <div>
             <LoadingPopup open={isLoading} />
+            <Recording />
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
@@ -313,7 +287,7 @@ const PHQTestComponent = () => {
                 {TestComp(7, "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานท่ีต้องใช้ความตั้งใจ")}
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
-                {console.log((dataFromBackend != null))}
+
                 {isResultSubmit && (dataFromBackend != null) ?
                     <Result
                         score={totalScore}
@@ -327,6 +301,7 @@ const PHQTestComponent = () => {
                         uuid={questionnaireRow}
                         behavior={behavior}
                     />
+
                     : <Button
                         disabled={!(isChecked.every(bool => bool))}
                         variant="contained"
