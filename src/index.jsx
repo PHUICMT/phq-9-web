@@ -4,12 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-console.error = (...x) => {
-  // debugger;
-  if (true) {
-    return;
-  }
-};
 ReactDOM.render(
   <React.StrictMode>
     <App />
