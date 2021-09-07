@@ -11,20 +11,19 @@
 }
 
 .test-container {
-  display: grid;
   position: absolute;
   justify-content: center;
   justify-items: center;
   width: 100%;
 
   .test-component {
-    margin-top: 20px;
-    width: 1000px;
-    height: 63.17px;
+    width: 100%;
+    height: 70px;
     padding: 10px;
     border-radius: 30px;
 
     display: grid;
+    justify-content: center;
     align-items: center;
     grid-template-columns: 36px 16px 600px auto;
 
