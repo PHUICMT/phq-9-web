@@ -28,25 +28,16 @@ let fontEndTimeStamp = [[], [], [], [], [], [], [], [], []];
 let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
-<<<<<<< HEAD
-<<<<<<< HEAD
+let behavior = ['', '', '', '', '', '', '', '', ''];
+
 let start_end_time = [-1, -1];
-=======
-let start_end_time = [getCurrentTime(), 0];
->>>>>>> 📝 Change .gitignore
 
-let dataFromBackend = null;
+let isChecked = [false, false, false, false, false, false, false, false, false];
+let questionnaireRow = 0;
 
-let isLoading = false;
-let loaded = false;
-=======
-let start_end_time = [getCurrentTime(), 0];
-
-let tempData = null;
->>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
 
 try {
-    QuestionnaireSenderService(questionnaire_uuid);
+    QuestionnaireSenderService(questionnaire_uuid).then(result => (questionnaireRow = result.questionnaire));
 } catch { }
 
 function getCurrentTime() {
@@ -54,9 +45,9 @@ function getCurrentTime() {
     return now;
 }
 const PHQTestComponent = () => {
+
     const location = useLocation();
     const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
 
@@ -71,13 +62,11 @@ const PHQTestComponent = () => {
     const [streamScreen, setStreamScreen] = useState(null);
 
     const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
-=======
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
->>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
+
 
     useEffect(() => {
         if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
@@ -105,22 +94,20 @@ const PHQTestComponent = () => {
         sendRequest().then(
             (response) => {
                 if (recordType.includes('webcam')) {
-                    // setDataFromBackend(response);
                     tempData = response;
-                    console.log(tempData);
                     return response;
                 }
             }
         ).catch((e) => console.log(e));
     }
 
-    function VideoSenderService(blob, recordType, uuid) {
 
+    const VideoSenderService = function (blob, recordType, uuid) {
         setIsLoading(true);
         var xhr = new XMLHttpRequest();
         xhr.onload = function (e) {
             if (this.readyState === 4) {
-                console.log("Server returned: ", e.target.responseText);
+                // console.log("Server returned: ", e.target.responseText);
             }
         };
         var video = new FormData();
@@ -190,7 +177,6 @@ const PHQTestComponent = () => {
 
     }
 
-<<<<<<< HEAD
     function Recording() {
         var temp_backend = null;
         useEffect(() => {
@@ -208,22 +194,29 @@ const PHQTestComponent = () => {
         return temp_backend;
     };
 
-=======
->>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
     const TestComp = (index, text) => {
         var className = index % 2;
-        const [value, setValue] = useState(0);
+        const [value, setValue] = useState(-1);
         const [isChanged, setIsChanged] = useState(null);
         const [onHover, setOnHover] = useState(false);
         const handleCheckedChange = (n) => {
             timeStamp[index - 1] = [...timeStamp[index - 1], getCurrentTime()];
             if (isChanged == null) {
+                for (var i = 0; i < (index - 1); i++) {
+                    if (!isChecked[i] && !(behavior[i].includes('Skip'))) {
+                        behavior[i] = behavior[i] + '|Skip|';
+                    }
+                }
                 setIsChanged(false);
+                isChecked[index - 1] = true;
                 clickTime[index - 1] = moment().format('HH:mm:ss');
             }
 
             if (isChanged) {
                 changedTimeStamp[index - 1] = [...changedTimeStamp[index - 1], getCurrentTime()];
+                if (!behavior[index - 1].includes('Changed')) {
+                    behavior[index - 1] = behavior[index - 1] + '|Changed|';
+                }
             } else {
                 setIsChanged(true);
             }
@@ -245,15 +238,7 @@ const PHQTestComponent = () => {
                 var now = (getCurrentTime() - start_end_time[0]);
                 var sumTime = now - before;
                 scopeTime[index - 1] += sumTime;
-<<<<<<< HEAD
-<<<<<<< HEAD
                 fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [before, now]];
-=======
-                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
->>>>>>> 📝 Change .gitignore
-=======
-                fontEndTimeStamp[index - 1] = [...fontEndTimeStamp[index - 1], [startHover[index - 1], getCurrentTime()]];
->>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
             }
         }
         const formContainer = (n) => {
@@ -316,11 +301,7 @@ const PHQTestComponent = () => {
 
     return (
         <div>
-<<<<<<< HEAD
-            {/* <LoadingPopup open={isLoading} /> */}
-=======
             <LoadingPopup open={isLoading} />
->>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
@@ -343,22 +324,18 @@ const PHQTestComponent = () => {
                         hoverTime={scopeTime}
                         fontEndTimeStamp={fontEndTimeStamp}
                         clickTime={clickTime}
+                        uuid={questionnaireRow}
+                        behavior={behavior}
                     />
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 📝 Change .gitignore
-=======
->>>>>>> 1471b8b45187a2d159fa8e5df671fdc3964a3c92
                     : <Button
+                        disabled={!(isChecked.every(bool => bool))}
                         variant="contained"
                         size="large"
                         className="submit-button"
                         onClick={() => handleOnSubmit()}
                     >ส่งคำตอบ</Button>
                 }
-                {/* {(dataFromBackend != null) ? handleScrollToResult() : null} */}
+                {(dataFromBackend != null) ? handleScrollToResult() : null}
             </Container>
         </div>
     );

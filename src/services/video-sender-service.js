@@ -7,7 +7,7 @@ export const QuestionnaireSenderService = function (uuid) {
       console.log("Server returned: ", e.target.responseText);
     }
   };
-  $.ajax({
+  return $.ajax({
     type: "POST",
     url: `/questionnaire`,
     data: JSON.stringify({ uuid: uuid }),
