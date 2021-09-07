@@ -18,6 +18,8 @@ function Result(props) {
     const [clickTime, setClickTime] = useState([]);
     const [backend_start_end_time, setBackend_start_end_time] = useState([]);
     const [total_emotion, setTotal_emotion] = useState([]);
+    const [uuid, setUuid] = useState('NaN');
+    const [behavior, setBehavior] = useState('');
 
     const [groupTest, setGroupTest] = useState(1);
     let history = useHistory();
@@ -31,6 +33,8 @@ function Result(props) {
         setClickTime(props.clickTime);
         setBackend_start_end_time(props.backend_start_end_time);
         setTotal_emotion(props.total_emotion);
+        setUuid(props.uuid);
+        setBehavior(props.behavior);
     }, [
         score,
         start_end_time,
@@ -41,6 +45,9 @@ function Result(props) {
         backend_start_end_time,
         total_emotion,
         groupTest,
+        uuid,
+        behavior,
+        props.behavior,
         props.score,
         props.backendData,
         props.start_end_time,
@@ -50,6 +57,7 @@ function Result(props) {
         props.clickTime,
         props.backend_start_end_time,
         props.total_emotion,
+        props.uuid,
     ]);
 
     async function setData() {
@@ -142,6 +150,8 @@ function Result(props) {
                 clickTime: clickTime,
                 reactionTime: hoverTime,
                 emotion: allEmote,
+                uuid: uuid,
+                behavior: behavior,
             },
         });
     }

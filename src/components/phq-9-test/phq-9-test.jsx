@@ -28,10 +28,15 @@ let fontEndTimeStamp = [[], [], [], [], [], [], [], [], []];
 let startHover = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let timeStamp = [[], [], [], [], [], [], [], [], []];
 let changedTimeStamp = [[], [], [], [], [], [], [], [], []];
+let behavior = ['', '', '', '', '', '', '', '', ''];
 let start_end_time = [-1, -1];
 
+let isChecked = [false, false, false, false, false, false, false, false, false];
+let questionnaireRow = 0;
+
+
 try {
-    QuestionnaireSenderService(questionnaire_uuid);
+    QuestionnaireSenderService(questionnaire_uuid).then(result => (questionnaireRow = result.questionnaire));
 } catch { }
 
 function getCurrentTime() {
@@ -39,9 +44,9 @@ function getCurrentTime() {
     return now;
 }
 const PHQTestComponent = () => {
+
     const location = useLocation();
     const [totalValues, setTotalValues] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
 
@@ -57,12 +62,16 @@ const PHQTestComponent = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
+
     const VideoSenderService = function (blob, recordType, uuid) {
         setIsLoading(true);
         var xhr = new XMLHttpRequest();
         xhr.onload = function (e) {
             if (this.readyState === 4) {
-                console.log("Server returned: ", e.target.responseText);
+                // console.log("Server returned: ", e.target.responseText);
             }
         };
         var video = new FormData();
@@ -160,18 +169,27 @@ const PHQTestComponent = () => {
 
     const TestComp = (index, text) => {
         var className = index % 2;
-        const [value, setValue] = useState(0);
+        const [value, setValue] = useState(-1);
         const [isChanged, setIsChanged] = useState(null);
         const [onHover, setOnHover] = useState(false);
         const handleCheckedChange = (n) => {
             timeStamp[index - 1] = [...timeStamp[index - 1], getCurrentTime()];
             if (isChanged == null) {
+                for (var i = 0; i < (index - 1); i++) {
+                    if (!isChecked[i] && !(behavior[i].includes('Skip'))) {
+                        behavior[i] = behavior[i] + '|Skip|';
+                    }
+                }
                 setIsChanged(false);
+                isChecked[index - 1] = true;
                 clickTime[index - 1] = moment().format('HH:mm:ss');
             }
 
             if (isChanged) {
                 changedTimeStamp[index - 1] = [...changedTimeStamp[index - 1], getCurrentTime()];
+                if (!behavior[index - 1].includes('Changed')) {
+                    behavior[index - 1] = behavior[index - 1] + '|Changed|';
+                }
             } else {
                 setIsChanged(true);
             }
@@ -280,9 +298,12 @@ const PHQTestComponent = () => {
                         hoverTime={scopeTime}
                         fontEndTimeStamp={fontEndTimeStamp}
                         clickTime={clickTime}
+                        uuid={questionnaireRow}
+                        behavior={behavior}
                     />
 
                     : <Button
+                        disabled={!(isChecked.every(bool => bool))}
                         variant="contained"
                         size="large"
                         className="submit-button"
