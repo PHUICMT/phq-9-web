@@ -104,7 +104,12 @@ export function Report(props) {
     }
     function checkBehaviorUndefined(n) {
         if (typeof (behavior) !== 'undefined') {
-            return behavior[n];
+            return (
+                <div className="behavior">
+                    {(behavior[n].includes('Changed')) ? <div className="behavior change"><h>Change</h></div> : <div />}
+                    {(behavior[n].includes('Skip')) ? <div className="behavior skip"><h>Skip</h></div> : <div />}
+                </div>
+            );
         }
         return '';
     }
