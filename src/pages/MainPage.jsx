@@ -4,8 +4,8 @@ import AcceptToggle from "../components/accept-toggle/accept-toggle"
 const MainPage = () => {
     return (
         <React.Fragment>
-            <HeaderWithIcon/>
-            <AcceptToggle/>
+            <HeaderWithIcon />
+            <AcceptToggle />
         </React.Fragment>
     );
 };

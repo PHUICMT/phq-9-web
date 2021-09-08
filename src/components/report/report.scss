@@ -160,3 +160,48 @@
   column-gap: 12px;
   grid-template-columns: 24px 24px 24px 24px;
 }
+
+.behavior {
+  display: grid;
+  margin-right: 5px;
+  grid-template-columns: auto auto;
+
+  background: rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  border-radius: 20px;
+
+  font-family: "Prompt", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  justify-content: center;
+  align-items: center;
+
+  background-repeat: no-repeat;
+  background-position: 5px center;
+
+  &.skip {
+    margin-left: 2px;
+    width: 70px;
+    height: 24px;
+    border: 1px solid #00d5d5;
+    color: #00d5d5;
+    background-image: url("../../assets/icons/skip.svg");
+
+    h {
+      margin-left: 15px;
+    }
+  }
+  &.change {
+    margin-right: 2px;
+    width: 70px;
+    height: 24px;
+    border: 1px solid #ff725e;
+    color: #ff725e;
+    background-image: url("../../assets/icons/change.svg");
+
+    h {
+      margin-left: 15px;
+      font-size: 9px;
+    }
+  }
+}
