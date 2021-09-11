@@ -17,6 +17,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+{/* <a href="https://www.freepik.com/vectors/people">People vector created by pch.vector - www.freepik.com</a> */ }
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
