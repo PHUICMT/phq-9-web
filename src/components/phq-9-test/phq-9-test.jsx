@@ -5,6 +5,7 @@ import Result from '../result/result'
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
 import LoadingPopup from "../../components/loading-popup/loading-popup"
 import { QuestionnaireSenderService, ResultAnswerSenderService } from "../../services/video-sender-service";
+import MailSender from "../../services/mail-sender-service"
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -311,6 +312,15 @@ const PHQTestComponent = () => {
                     >ส่งคำตอบ</Button>
                 }
                 {(dataFromBackend != null) ? handleScrollToResult() : null}
+                <Button
+                    disabled={false}
+                    variant="contained"
+                    size="large"
+                    className="submit-button"
+                    onClick={() => MailSender('', '', '')}
+                >
+                    Send Email
+                </Button>
             </Container>
         </div>
     );
