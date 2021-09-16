@@ -3,9 +3,8 @@ import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
-import LoadingPopup from "../../components/loading-popup/loading-popup"
+import { LoadingPopup } from "../../components/loading-popup/loading-popup"
 import { QuestionnaireSenderService, ResultAnswerSenderService } from "../../services/video-sender-service";
-import MailSender from "../../services/mail-sender-service"
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
@@ -20,6 +19,8 @@ import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
 import $ from "jquery";
 import moment from 'moment';
+
+import TextField from '@material-ui/core/TextField';
 
 const questionnaire_uuid = uuidv4();
 
@@ -301,6 +302,7 @@ const PHQTestComponent = () => {
                         clickTime={clickTime}
                         uuid={questionnaireRow}
                         behavior={behavior}
+                        questionnaire_uuid={questionnaire_uuid}
                     />
 
                     : <Button
@@ -312,15 +314,6 @@ const PHQTestComponent = () => {
                     >ส่งคำตอบ</Button>
                 }
                 {(dataFromBackend != null) ? handleScrollToResult() : null}
-                <Button
-                    disabled={false}
-                    variant="contained"
-                    size="large"
-                    className="submit-button"
-                    onClick={() => MailSender('', '', '')}
-                >
-                    Send Email
-                </Button>
             </Container>
         </div>
     );

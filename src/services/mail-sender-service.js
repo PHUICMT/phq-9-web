@@ -1,33 +1,41 @@
-let nodemailer = require("nodemailer");
-let { ipcMain } = require("electron");
+import $ from "jquery";
 
-export function MailSender(to, subject, body) {
-  ipcMain.on("sendMail", (event, args) => {
-    console.log("ipcMain: Executing SendIt");
+export function UploadImage(uuid, blob, to_email) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function (e) {
+    if (this.readyState === 4) {
+      // console.log("Server returned: ", e.target.responseText);
+    }
+  };
+  var image = new FormData();
+  image.append("uuid", uuid);
+  image.append("blob", blob);
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "phq.9.thesis@gmail.com",
-        pass: "4847_5523",
-      },
-    });
-
-    let mailOptions = {
-      from: "phq.9.thesis@gmail.com",
-      to: "icmtchannel@gmail.com",
-      subject: "Test MailSender",
-      html: "<b>Do you receive this mail?</b>",
-    };
-
-    transporter.sendMail(mailOptions, function (err, info) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(info);
-      }
-    });
+  return $.ajax({
+    type: "POST",
+    url: "/upload-image",
+    data: image,
+    processData: false,
+    contentType: false,
+  }).done(function (data) {
+    console.log("Server returned: ", data);
+    MailSender(uuid, to_email);
   });
 }
 
-export default MailSender;
+function MailSender(uuid, to_email) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function (e) {
+    if (this.readyState === 4) {
+      console.log("Server returned: ", e.target.responseText);
+    }
+  };
+  return $.ajax({
+    type: "POST",
+    url: `/send-mail`,
+    data: JSON.stringify({ uuid: uuid, to_email: to_email }),
+    contentType: "application/json;charset=UTF-8",
+  });
+}
+
+export default UploadImage;

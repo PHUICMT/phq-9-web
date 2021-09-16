@@ -20,6 +20,7 @@ function Result(props) {
     const [total_emotion, setTotal_emotion] = useState([]);
     const [uuid, setUuid] = useState('NaN');
     const [behavior, setBehavior] = useState('');
+    const [questionnaire_uuid, setQuestionnaire_uuid] = useState('');
 
     const [groupTest, setGroupTest] = useState(1);
     let history = useHistory();
@@ -35,6 +36,7 @@ function Result(props) {
         setTotal_emotion(props.total_emotion);
         setUuid(props.uuid);
         setBehavior(props.behavior);
+        setQuestionnaire_uuid(props.questionnaire_uuid);
     }, [
         score,
         start_end_time,
@@ -47,6 +49,7 @@ function Result(props) {
         groupTest,
         uuid,
         behavior,
+        questionnaire_uuid,
         props.behavior,
         props.score,
         props.backendData,
@@ -58,6 +61,7 @@ function Result(props) {
         props.backend_start_end_time,
         props.total_emotion,
         props.uuid,
+        props.questionnaire_uuid,
     ]);
 
     async function setData() {
@@ -152,6 +156,7 @@ function Result(props) {
                 emotion: allEmote,
                 uuid: uuid,
                 behavior: behavior,
+                questionnaire_uuid: questionnaire_uuid,
             },
         });
     }

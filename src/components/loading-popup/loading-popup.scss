@@ -12,3 +12,23 @@
     color: #e5b8ff;
   }
 }
+
+.mail-popup {
+  width: auto;
+  height: auto;
+  overflow: visible;
+  .MuiPaper-root {
+    background-color: transparent;
+  }
+  .MuiDialogContent-root {
+    overflow: hidden;
+    padding: 0;
+  }
+  .MuiPaper-elevation24 {
+    box-shadow: none;
+  }
+  .mail-animation {
+    width: 640px;
+    height: 640px;
+  }
+}
