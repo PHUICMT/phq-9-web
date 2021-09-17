@@ -10,8 +10,7 @@ export function UploadImage(uuid, blob, to_email) {
   var image = new FormData();
   if (uuid != null && blob != null && to_email != null) {
     image.append("uuid", uuid);
-    image.append("blob", blob);
-    console.log(image);
+    image.append("result_image", blob);
     return $.ajax({
       type: "POST",
       url: "/upload-image",
@@ -19,7 +18,7 @@ export function UploadImage(uuid, blob, to_email) {
       processData: false,
       contentType: false,
     }).done(function (data) {
-      console.log("Server returned: ", data);
+      // console.log("Server returned: ", data);
       MailSender(uuid, to_email);
     });
   }
