@@ -178,10 +178,11 @@ export function Report(props) {
                 'font-family': 'Prompt'
             }
         }).then(function (blob) {
-            UploadImage(questionnaire_uuid, blob, to_email);
+            var result = UploadImage(questionnaire_uuid, blob, to_email);
             setTimeout(() => {
                 setSendingMail(false);
             }, 6000);
+            console.log(result);
         });
     }
 

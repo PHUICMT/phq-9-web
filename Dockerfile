@@ -1,10 +1,10 @@
-FROM node:alpine as builder
+FROM node:alpine
 
 WORKDIR /app
 
 COPY . ./
-RUN npm install
+RUN yarn
 ENV PATH /app/node_modules/.bin:$PATH
-RUN npm run build
+RUN yarn build
 
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "start" ]
