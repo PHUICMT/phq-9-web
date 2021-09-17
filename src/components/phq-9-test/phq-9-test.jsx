@@ -3,7 +3,7 @@ import IndexBox from '../../assets/icons/index-box.svg'
 
 import Result from '../result/result'
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
-import LoadingPopup from "../../components/loading-popup/loading-popup"
+import { LoadingPopup } from "../../components/loading-popup/loading-popup"
 import { QuestionnaireSenderService, ResultAnswerSenderService } from "../../services/video-sender-service";
 
 import { useState, useEffect } from "react";
@@ -19,6 +19,8 @@ import update from 'react-addons-update';
 import { v4 as uuidv4 } from 'uuid';
 import $ from "jquery";
 import moment from 'moment';
+
+import TextField from '@material-ui/core/TextField';
 
 const questionnaire_uuid = uuidv4();
 
@@ -300,6 +302,7 @@ const PHQTestComponent = () => {
                         clickTime={clickTime}
                         uuid={questionnaireRow}
                         behavior={behavior}
+                        questionnaire_uuid={questionnaire_uuid}
                     />
 
                     : <Button

@@ -3,11 +3,15 @@ import Download from '../../assets/icons/download-icon.svg'
 import CheckOn from '../../assets/icons/check-box-on.svg'
 import CheckOff from '../../assets/icons/check-box-off.svg'
 import QuestionnaireIcon from '../../assets/icons/questionnaire-icon.svg'
+import Send from '../../assets/icons/send.svg'
 
 import Angry from '../../assets/icons/angry-icon.svg'
 import Happy from '../../assets/icons/happy-icon.svg'
 import Neutral from '../../assets/icons/neutral-icon.svg'
 import Sad from '../../assets/icons/sad-icon.svg'
+
+import { UploadImage } from "../../services/mail-sender-service.js"
+import { MailSenderPopup } from "../../components/loading-popup/loading-popup"
 
 import { useState, useEffect } from 'react';
 import domtoimage from 'dom-to-image';
@@ -21,18 +25,25 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 
 
 
 export function Report(props) {
 
-    const [checkBox, setCheckBox] = useState(0);
+    const [checkBox, setCheckBox] = useState(1);
     const [clickTime, setClickTime] = useState([]);
     const [reactionTime, setReactionTime] = useState([]);
     const [emotion, setEmotion] = useState();
     const [uuid, setUuid] = useState();
     const [behavior, setBehavior] = useState();
+    const [questionnaire_uuid, setQuestionnaire_uuid] = useState();
+
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    const [email, setEmail] = useState();
+    const [sendingMail, setSendingMail] = useState(false);
 
 
 
@@ -43,6 +54,8 @@ export function Report(props) {
         setEmotion(props.location.state.emotion);
         setUuid(props.location.state.uuid);
         setBehavior(props.location.state.behavior);
+        setQuestionnaire_uuid(props.location.state.questionnaire_uuid);
+        setIsLoaded(true);
     }, [
         checkBox,
         clickTime,
@@ -50,13 +63,21 @@ export function Report(props) {
         emotion,
         uuid,
         behavior,
+        questionnaire_uuid,
         props.location.state.checkBox,
         props.location.state.clickTime,
         props.location.state.reactionTime,
         props.location.state.emotion,
         props.location.state.uuid,
         props.location.state.behavior,
+        props.location.state.questionnaire_uuid,
     ]);
+
+    useEffect(() => {
+        if (isLoaded) {
+            uploadResultImage();
+        }
+    }, [])
 
     function padLeadingZeros(num, size) {
         var s = num + "";
@@ -149,6 +170,24 @@ export function Report(props) {
             });
     }
 
+    function uploadResultImage(to_email) {
+        setSendingMail(true);
+        var container = document.getElementById('report-paper');
+        domtoimage.toBlob(container, {
+            style: {
+                'font-family': 'Prompt'
+            }
+        }).then(function (blob) {
+            UploadImage(questionnaire_uuid, blob, to_email);
+            setTimeout(() => {
+                setSendingMail(false);
+            }, 6000);
+        });
+    }
+
+    function handleEmail(e) {
+        setEmail(e.target.value);
+    }
 
     const classes = useStyles();
     return (
@@ -218,6 +257,23 @@ export function Report(props) {
                     </Button>
                 </div>
             </div>
+            <div className="email-container">
+                <TextField
+                    className="email-text-container"
+                    id="outlined-basic"
+                    label="E-mail"
+                    variant="outlined"
+                    value={email}
+                    onChange={handleEmail}
+                />
+                <Button
+                    onClick={() => uploadResultImage(email)}
+                    variant="contained"
+                    size="large"
+                    className="submit-button"><img alt='Send' src={Send} />
+                </Button>
+            </div>
+            <MailSenderPopup open={sendingMail} />
         </Container>
     );
 };
