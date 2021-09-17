@@ -8,19 +8,20 @@ export function UploadImage(uuid, blob, to_email) {
     }
   };
   var image = new FormData();
-  image.append("uuid", uuid);
-  image.append("blob", blob);
-
-  return $.ajax({
-    type: "POST",
-    url: "/upload-image",
-    data: image,
-    processData: false,
-    contentType: false,
-  }).done(function (data) {
-    console.log("Server returned: ", data);
-    MailSender(uuid, to_email);
-  });
+  if (uuid != null && blob != null && to_email != null) {
+    image.append("uuid", uuid);
+    image.append("result_image", blob);
+    return $.ajax({
+      type: "POST",
+      url: "/upload-image",
+      data: image,
+      processData: false,
+      contentType: false,
+    }).done(function (data) {
+      // console.log("Server returned: ", data);
+      MailSender(uuid, to_email);
+    });
+  }
 }
 
 function MailSender(uuid, to_email) {
