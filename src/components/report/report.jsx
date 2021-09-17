@@ -48,13 +48,13 @@ export function Report(props) {
 
 
     useEffect(() => {
-        // setCheckBox(props.location.state.checkBox);
-        // setClickTime(props.location.state.clickTime);
-        // setReactionTime(props.location.state.reactionTime);
-        // setEmotion(props.location.state.emotion);
-        // setUuid(props.location.state.uuid);
-        // setBehavior(props.location.state.behavior);
-        // setQuestionnaire_uuid(props.location.state.questionnaire_uuid);
+        setCheckBox(props.location.state.checkBox);
+        setClickTime(props.location.state.clickTime);
+        setReactionTime(props.location.state.reactionTime);
+        setEmotion(props.location.state.emotion);
+        setUuid(props.location.state.uuid);
+        setBehavior(props.location.state.behavior);
+        setQuestionnaire_uuid(props.location.state.questionnaire_uuid);
         setIsLoaded(true);
     }, [
         checkBox,
@@ -64,13 +64,13 @@ export function Report(props) {
         uuid,
         behavior,
         questionnaire_uuid,
-        // props.location.state.checkBox,
-        // props.location.state.clickTime,
-        // props.location.state.reactionTime,
-        // props.location.state.emotion,
-        // props.location.state.uuid,
-        // props.location.state.behavior,
-        // props.location.state.questionnaire_uuid,
+        props.location.state.checkBox,
+        props.location.state.clickTime,
+        props.location.state.reactionTime,
+        props.location.state.emotion,
+        props.location.state.uuid,
+        props.location.state.behavior,
+        props.location.state.questionnaire_uuid,
     ]);
 
     useEffect(() => {
