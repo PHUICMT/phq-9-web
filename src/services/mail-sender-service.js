@@ -4,7 +4,7 @@ export function UploadImage(uuid, blob, to_email) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function (e) {
     if (this.readyState === 4) {
-      // console.log("Server returned: ", e.target.responseText);
+      console.log("Server returned: ", e.target.responseText);
     }
   };
   var image = new FormData();
@@ -17,8 +17,7 @@ export function UploadImage(uuid, blob, to_email) {
       data: image,
       processData: false,
       contentType: false,
-    }).done(function (data) {
-      // console.log("Server returned: ", data);
+    }).done(() => {
       MailSender(uuid, to_email);
     });
   }

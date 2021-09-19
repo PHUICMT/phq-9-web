@@ -4,7 +4,7 @@ import IndexBox from '../../assets/icons/index-box.svg'
 import Result from '../result/result'
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
 import { LoadingPopup } from "../../components/loading-popup/loading-popup"
-import { QuestionnaireSenderService, ResultAnswerSenderService } from "../../services/video-sender-service";
+import { QuestionnaireSenderService, ResultAnswerSenderService } from "../../services/message-sender-service";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
