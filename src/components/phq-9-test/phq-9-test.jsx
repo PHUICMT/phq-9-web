@@ -88,8 +88,9 @@ const PHQTestComponent = () => {
             contentType: false,
         }).done(function (data) {
             if (recordType.includes("webcam")) {
-                setDataFromBackend(data);
+                // setDataFromBackend(data);
                 setIsLoading(false);
+                //redirect to success page!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         });
     };

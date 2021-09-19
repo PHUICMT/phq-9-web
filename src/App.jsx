@@ -4,9 +4,10 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import MainPage from './pages/MainPage';
+import Success from './pages/success/success';
 import Header from "./components/header/header";
 import PHQTestComponent from './components/phq-9-test/phq-9-test';
-import Report from './components/report/report';
+// import Report from './components/report/report';
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -20,7 +21,8 @@ function App() {
         <Switch>
           <Route path="/index" component={MainPage} />
           <Route path="/phq-9" component={PHQTestComponent} />
-          <Route path="/report" render={(props) => <Report {...props} />} />
+          <Route path="/success" component={Success} />
+          {/* <Route path="/report" render={(props) => <Report {...props} />} /> */}
           <Route path='*' exact >
             <Redirect from='*' to='/index' />
           </Route>
