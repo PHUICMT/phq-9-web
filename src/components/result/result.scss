@@ -107,3 +107,45 @@
     }
   }
 }
+
+.email-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: auto auto;
+
+  .MuiInputBase-root {
+    font-family: "Prompt", sans-serif;
+    margin-right: 10px;
+    border-radius: 30px;
+    color: #6c5ce7;
+    min-width: 300px;
+  }
+  .MuiInputLabel-outlined {
+    font-family: "Prompt", sans-serif;
+    color: #6c5ce7;
+    font-weight: 400;
+  }
+  .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #6c5ce7;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #6c5ce778;
+  }
+  .submit-button {
+    font-family: "Prompt", sans-serif;
+    font-size: 24px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 50px;
+    width: 10px;
+    height: 60px;
+    background-color: #ebcffd78;
+    color: #6c5ce7;
+  }
+  .submit-button:hover {
+    background-color: #00ff95;
+  }
+}

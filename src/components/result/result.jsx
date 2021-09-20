@@ -1,24 +1,63 @@
 import "./result.scss";
 import Send from '../../assets/icons/send.svg'
 
-import ReportWorker from '../../worker/get-result-from-backend-worker'
-
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
+import TextField from '@material-ui/core/TextField';
+
+const worker_script = require('../../worker/get-result-from-backend-worker').default;
 
 function Result(props) {
+    const [uuid, setUuid] = useState();
     const [score, setScore] = useState();
     const [groupTest, setGroupTest] = useState(1);
+    const [questionnaireRow, setQuestionnaireRow] = useState();
+    const [behavior, setBehavior] = useState();
+    const [clickTime, setClickTime] = useState();
+    const [fontEndTimeStamp, setFontEndTimeStamp] = useState();
+    const [hoverTime, setHoverTime] = useState();
+    const [start_end_time, setStart_end_time] = useState();
+
     const history = useHistory();
+    const worker = new Worker(worker_script);
+
+    const [email, setEmail] = useState();
+
+    worker.onmessage = e => {
+        console.log('[From Worker]:', e.data);
+        console.log(e.data.includes('Accepted'))
+        if (e.data.includes('Accepted')) {
+            history.push("/sucess");
+        }
+    };
 
     useEffect(() => {
+        setUuid(props.uuid);
         setScore(props.score);
+        setQuestionnaireRow(props.questionnaireRow);
+        setBehavior(props.behavior);
+        setClickTime(props.clickTime);
+        setFontEndTimeStamp(props.fontEndTimeStamp);
+        setHoverTime(props.hoverTime);
+        setStart_end_time(props.start_end_time);
     }, [
+        uuid,
         score,
+        questionnaireRow,
+        behavior,
+        clickTime,
+        fontEndTimeStamp,
+        hoverTime,
+        props.hoverTime,
+        props.fontEndTimeStamp,
+        props.clickTime,
+        props.uuid,
         props.score,
+        props.questionnaireRow,
+        props.behavior,
     ]);
 
     const handleRadioChange = (event) => {
@@ -49,19 +88,22 @@ function Result(props) {
         backgroundColor: result['color'] + '1c',
     };
 
-    async function handleOnSubmit() {
-        const worker = new Worker(ReportWorker);
-        worker.addEventListener('message', onMsg, false);
-        worker.addEventListener('error', onError, false);
-        worker.postMessage();
-        await history.push({
-            pathname: "/sucess",
-            // state: {
-            //   uuid: uuid,
-            // },
+    function handleOnSubmit() {
+        worker.postMessage({
+            start_end_time: start_end_time,
+            hoverTime: hoverTime,
+            fontEndTimeStamp: fontEndTimeStamp,
+            clickTime: clickTime,
+            questionnaireRow: questionnaireRow,
+            behavior: behavior,
+            uuid: uuid,
+            email: email,
         });
     }
 
+    function handleEmail(e) {
+        setEmail(e.target.value);
+    }
 
     return (
         <Container className="result-card-container">
@@ -116,6 +158,16 @@ function Result(props) {
                         size="large"
                         className="submit-button"><img alt='send' src={Send} /> รายงานผล
                     </Button>
+                    <div className="email-container">
+                        <TextField
+                            id="outlined-basic"
+                            label="E-mail"
+                            variant="outlined"
+                            value={email}
+                            onChange={handleEmail}
+                        />
+                    </div>
+                    {/* <MailSenderPopup open={sendingMail} /> */}
                 </div>
             </div>
         </Container>

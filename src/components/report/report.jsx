@@ -15,8 +15,6 @@ import { MailSenderPopup } from "../../components/loading-popup/loading-popup"
 
 import { useState, useEffect } from 'react';
 import domtoimage from 'dom-to-image';
-import { saveAs } from 'file-saver';
-import { Container } from 'react-bulma-components';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,8 +22,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 
 
 
@@ -38,23 +34,20 @@ export function Report(props) {
     const [emotion, setEmotion] = useState();
     const [uuid, setUuid] = useState();
     const [behavior, setBehavior] = useState();
-    const [questionnaire_uuid, setQuestionnaire_uuid] = useState();
+    const [questionnaireRow, setQuestionnaireRow] = useState();
 
     const [isLoaded, setIsLoaded] = useState(false);
-
     const [email, setEmail] = useState();
-    const [sendingMail, setSendingMail] = useState(false);
-
-
 
     useEffect(() => {
-        setCheckBox(props.location.state.checkBox);
-        setClickTime(props.location.state.clickTime);
-        setReactionTime(props.location.state.reactionTime);
-        setEmotion(props.location.state.emotion);
-        setUuid(props.location.state.uuid);
-        setBehavior(props.location.state.behavior);
-        setQuestionnaire_uuid(props.location.state.questionnaire_uuid);
+        setCheckBox(props.checkBox);
+        setClickTime(props.clickTime);
+        setReactionTime(props.reactionTime);
+        setEmotion(props.emotion);
+        setUuid(props.uuid);
+        setBehavior(props.behavior);
+        setQuestionnaireRow(props.questionnaireRow);
+        setEmail(props.email);
         setIsLoaded(true);
     }, [
         checkBox,
@@ -63,21 +56,20 @@ export function Report(props) {
         emotion,
         uuid,
         behavior,
-        questionnaire_uuid,
-        props.location.state.checkBox,
-        props.location.state.clickTime,
-        props.location.state.reactionTime,
-        props.location.state.emotion,
-        props.location.state.uuid,
-        props.location.state.behavior,
-        props.location.state.questionnaire_uuid,
+        questionnaireRow,
+        email,
+        props.checkBox,
+        props.clickTime,
+        props.reactionTime,
+        props.emotion,
+        props.uuid,
+        props.behavior,
+        props.questionnaireRow,
+        props.email,
     ]);
-
-    useEffect(() => {
-        if (isLoaded) {
-            uploadResultImage();
-        }
-    }, [])
+    if (isLoaded) {
+        UploadResultImage(email);
+    }
 
     function padLeadingZeros(num, size) {
         var s = num + "";
@@ -158,46 +150,26 @@ export function Report(props) {
         },
     });
 
-    function handleOnSaveResult() {
-        var container = document.getElementById('report-paper');
-        domtoimage.toBlob(container, {
-            style: {
-                'font-family': 'Prompt'
-            }
-        })
-            .then(function (blob) {
-                saveAs(blob, '[PHQ-9]Result.png');
+    function UploadResultImage(to_email) {
+        var reportElement = ResultWorker();
+        if (reportElement != null) {
+            domtoimage.toBlob(reportElement, {
+                style: {
+                    'font-family': 'Prompt'
+                }
+            }).then(function (blob) {
+                UploadImage(questionnaireRow, blob, to_email);
             });
+        }
     }
 
-    function uploadResultImage(to_email) {
-        setSendingMail(true);
-        var container = document.getElementById('report-paper');
-        domtoimage.toBlob(container, {
-            style: {
-                'font-family': 'Prompt'
-            }
-        }).then(function (blob) {
-            var result = UploadImage(questionnaire_uuid, blob, to_email);
-            setTimeout(() => {
-                setSendingMail(false);
-            }, 6000);
-            console.log(result);
-        });
-    }
-
-    function handleEmail(e) {
-        setEmail(e.target.value);
-    }
-
-    const classes = useStyles();
-    return (
-        <Container className="report-container">
-            <div className="space-top"></div>
+    const ResultWorker = () => {
+        const classes = useStyles();
+        return (
             <div className="paper-container" id="report-paper">
                 <div className="form-header-box">
                     <div className="form-text-header">
-                        <p className="personal-id">รหัส {padLeadingZeros(uuid, 6)}</p>
+                        <p className="personal-id">รหัส {padLeadingZeros(questionnaireRow, 6)}</p>
                         <center><strong><p>รายงานวิเคราะห์แนวโน้มภาวะซึมเศร้า</p></strong></center>
                         <div className="group-type">
                             <p>ประเภทกลุ่มตัวอย่าง</p>
@@ -242,41 +214,9 @@ export function Report(props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <div className="button-group-container">
-                    <Button
-                        onClick={() => handleOnSaveResult()}
-                        variant="contained"
-                        size="large"
-                        className="submit-button"><img alt='download' src={Download} />&nbsp;บันทึกผลการทดสอบ
-                    </Button>
-                    <Button
-                        target="_blank"
-                        href="http://www.google.com/"
-                        variant="contained"
-                        size="large"
-                        className="retry-button"><img alt='test' src={QuestionnaireIcon} />&nbsp;ทำแบบประเมิน
-                    </Button>
-                </div>
             </div>
-            <div className="email-container">
-                <TextField
-                    className="email-text-container"
-                    id="outlined-basic"
-                    label="E-mail"
-                    variant="outlined"
-                    value={email}
-                    onChange={handleEmail}
-                />
-                <Button
-                    onClick={() => uploadResultImage(email)}
-                    variant="contained"
-                    size="large"
-                    className="submit-button"><img alt='Send' src={Send} />
-                </Button>
-            </div>
-            <MailSenderPopup open={sendingMail} />
-        </Container>
-    );
+        );
+    }
 };
 
 export default Report;

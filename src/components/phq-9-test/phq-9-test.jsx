@@ -20,8 +20,6 @@ import { v4 as uuidv4 } from 'uuid';
 import $ from "jquery";
 import moment from 'moment';
 
-import TextField from '@material-ui/core/TextField';
-
 const questionnaire_uuid = uuidv4();
 
 let clickTime = [null, null, null, null, null, null, null, null, null];
@@ -52,9 +50,6 @@ const PHQTestComponent = () => {
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
 
-    const [dataFromBackend, setDataFromBackend] = useState(null);
-
-
     const allowsRecord = useState(location.state)[0];
 
     const [isScreenRecord, setIsScreenRecord] = useState(false);
@@ -68,12 +63,25 @@ const PHQTestComponent = () => {
         window.scrollTo(0, 0);
     }, [location]);
 
+    useEffect(() => {
+        if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
+            setIsScreenRecord(true);
+            recordScreen(questionnaire_uuid);
+        }
+
+        if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
+            setIsVideoRecord(true);
+            recordVideo(questionnaire_uuid);
+            start_end_time[0] = getCurrentTime();
+        }
+    }, []);
+
     const VideoSenderService = function (blob, recordType, uuid) {
-        setIsLoading(true);
+        // setIsLoading(true);
         var xhr = new XMLHttpRequest();
         xhr.onload = function (e) {
             if (this.readyState === 4) {
-                // console.log("Server returned: ", e.target.responseText);
+                console.log("Server returned: ", e.target.responseText);
             }
         };
         var video = new FormData();
@@ -86,11 +94,9 @@ const PHQTestComponent = () => {
             data: video,
             processData: false,
             contentType: false,
-        }).done(function (data) {
+        }).done(() => {
             if (recordType.includes("webcam")) {
-                // setDataFromBackend(data);
                 setIsLoading(false);
-                //redirect to success page!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         });
     };
@@ -152,23 +158,6 @@ const PHQTestComponent = () => {
         );
 
     }
-
-    function Recording() {
-        var temp_backend = null;
-        useEffect(() => {
-            if (!isScreenRecord && allowsRecord['screenToggleAllows']) {
-                setIsScreenRecord(true);
-                recordScreen(questionnaire_uuid);
-            }
-
-            if (!isVideoRecord && allowsRecord['webcamToggleAllows']) {
-                setIsVideoRecord(true);
-                recordVideo(questionnaire_uuid);
-                start_end_time[0] = getCurrentTime();
-            }
-        }, []);
-        return temp_backend;
-    };
 
     const TestComp = (index, text) => {
         var className = index % 2;
@@ -257,7 +246,7 @@ const PHQTestComponent = () => {
         setTotalScore(sum);
         stopRecord();
         setIsResultSubmit(true);
-        ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
+        ResultAnswerSenderService(questionnaire_uuid, totalValues, behavior);
     }
 
     function handleScrollToResult() {
@@ -268,7 +257,7 @@ const PHQTestComponent = () => {
                 setTimeout(() => {
                     var container = document.getElementById('result-card-container');
                     container.scrollIntoView({ behavior: "smooth", block: 'center' })
-                }, 500)
+                }, 1000)
                 break;
             } catch {
             }
@@ -278,7 +267,6 @@ const PHQTestComponent = () => {
     return (
         <div>
             <LoadingPopup open={isLoading} />
-            <Recording />
             <PHQTitleCard />
             <Container className="test-container">
                 {TestComp(1, "เบื่อ ทำอะไร ๆ ก็ไม่เพลิดเพลิน")}
@@ -291,19 +279,16 @@ const PHQTestComponent = () => {
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
 
-                {isResultSubmit && (dataFromBackend != null) ?
+                {isResultSubmit ?
                     <Result
+                        uuid={questionnaire_uuid}
                         score={totalScore}
-                        total_emotion={dataFromBackend.total_emotion}
-                        backend_start_end_time={dataFromBackend.start_end_time}
-                        total_emotion_time={dataFromBackend.total_emotion_time}
+                        questionnaireRow={questionnaireRow}
+                        behavior={behavior}
                         start_end_time={start_end_time}
                         hoverTime={scopeTime}
                         fontEndTimeStamp={fontEndTimeStamp}
                         clickTime={clickTime}
-                        uuid={questionnaireRow}
-                        behavior={behavior}
-                        questionnaire_uuid={questionnaire_uuid}
                     />
 
                     : <Button
@@ -314,7 +299,7 @@ const PHQTestComponent = () => {
                         onClick={() => handleOnSubmit()}
                     >ส่งคำตอบ</Button>
                 }
-                {(dataFromBackend != null) ? handleScrollToResult() : null}
+                {isResultSubmit ? handleScrollToResult() : null}
             </Container>
         </div>
     );

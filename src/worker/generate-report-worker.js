@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import Report from "../components/report/report";
 
 let allEmote = [];
-
 function ReportWorker(props) {
   const [start_end_time, setStart_end_time] = useState([]);
   const [total_emotion_time, setTotal_emotion_time] = useState([]);
@@ -13,10 +12,11 @@ function ReportWorker(props) {
   const [total_emotion, setTotal_emotion] = useState([]);
   const [uuid, setUuid] = useState("NaN");
   const [behavior, setBehavior] = useState("");
-  const [questionnaire_uuid, setQuestionnaire_uuid] = useState("");
+  const [questionnaireRow, setQuestionnaireRow] = useState("");
+  const [email, setEmail] = useState();
 
   const [groupTest, setGroupTest] = useState(1);
-  let history = useHistory();
+  const [isGenReport, setIsGenReport] = useState(false);
 
   useEffect(() => {
     setStart_end_time(props.start_end_time);
@@ -28,8 +28,9 @@ function ReportWorker(props) {
     setTotal_emotion(props.total_emotion);
     setUuid(props.uuid);
     setBehavior(props.behavior);
-    setQuestionnaire_uuid(props.questionnaire_uuid);
+    setQuestionnaireRow(props.questionnaireRow);
     setGroupTest(props.groupTest);
+    setEmail(props.email);
   }, [
     start_end_time,
     total_emotion_time,
@@ -41,7 +42,8 @@ function ReportWorker(props) {
     groupTest,
     uuid,
     behavior,
-    questionnaire_uuid,
+    questionnaireRow,
+    email,
     props.behavior,
     props.backendData,
     props.start_end_time,
@@ -52,24 +54,19 @@ function ReportWorker(props) {
     props.backend_start_end_time,
     props.total_emotion,
     props.uuid,
-    props.questionnaire_uuid,
+    props.questionnaireRow,
     props.groupTest,
+    props.email,
   ]);
 
-  async function setData() {
-    if (typeof total_emotion_time !== "undefined") {
-      await emoteTimeLength();
-    }
-  }
-
-  async function emoteTimeLength() {
+  function emoteTimeLength() {
     allEmote = [];
     var Angry = total_emotion_time.angry;
     var Happy = total_emotion_time.happy;
     var Neutral = total_emotion_time.neutral;
     var Sad = total_emotion_time.sad;
 
-    await clickTime.forEach((dummy, i) => {
+    clickTime.forEach((dummy, i) => {
       var emotePerQuestion = [false, false, false, false]; //Angry, Happy, Neutral, Sad
       fontEndTimeStamp[i].map((timeLength) => {
         var start = timeLength[0];
@@ -105,22 +102,25 @@ function ReportWorker(props) {
       allEmote.push(emotePerQuestion);
       emotePerQuestion = [false, false, false, false];
     });
+    setIsGenReport(true);
   }
 
-  async function handleOnSendReport() {
-    await setData();
-    await history.push({
-      pathname: "/report",
-      state: {
+  if (typeof total_emotion_time !== "undefined") {
+    emoteTimeLength();
+
+    if (isGenReport) {
+      const packedData = {
         checkBox: groupTest,
         clickTime: clickTime,
         reactionTime: hoverTime,
         emotion: allEmote,
         uuid: uuid,
         behavior: behavior,
-        questionnaire_uuid: questionnaire_uuid,
-      },
-    });
+        questionnaireRow: questionnaireRow,
+        email: email,
+      };
+      Report(packedData);
+    }
   }
 }
 
