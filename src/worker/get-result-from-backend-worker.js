@@ -12,22 +12,28 @@ const workercode = () => {
     }
   };
 
-  function GetResultFromBackendWorker(uuid) {
+  function GetResultFromBackendWorker(uuid, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/process-video", true);
+    xhr.open("POST", "http://server:5000/process-video", false);
+    xhr.callback = callback;
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        console.log(response);
-        dataFromBackend = response;
-      }
-    };
+    // xhr.onreadystatechange = function () {
+    //   if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+    //     const response = JSON.parse(xhr.responseText);
+    //     console.log(response);
+    //     dataFromBackend = response;
+    //   }
+    // };
     xhr.send(JSON.stringify({ uuid: uuid }));
+    return xhr;
   }
 
   function StartGenerateWorker(uuid) {
-    GetResultFromBackendWorker(uuid);
+    function Callback(result) {
+      dataFromBackend = result;
+      console.log(result);
+    }
+    GetResultFromBackendWorker(uuid, Callback);
     console.log(dataFromBackend);
     if (dataFromBackend !== undefined) {
       let packedData = {

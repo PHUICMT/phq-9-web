@@ -246,7 +246,7 @@ const PHQTestComponent = () => {
         setTotalScore(sum);
         stopRecord();
         setIsResultSubmit(true);
-        ResultAnswerSenderService(questionnaire_uuid, totalValues, behavior);
+        ResultAnswerSenderService(questionnaire_uuid, totalValues, null);
     }
 
     function handleScrollToResult() {
