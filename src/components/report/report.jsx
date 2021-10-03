@@ -258,23 +258,6 @@ export function Report(props) {
                     </Button>
                 </div>
             </div>
-            <div className="email-container">
-                <TextField
-                    className="email-text-container"
-                    id="outlined-basic"
-                    label="E-mail"
-                    variant="outlined"
-                    value={email}
-                    onChange={handleEmail}
-                />
-                <Button
-                    onClick={() => uploadResultImage(email)}
-                    variant="contained"
-                    size="large"
-                    className="submit-button"><img alt='Send' src={Send} />
-                </Button>
-            </div>
-            <MailSenderPopup open={sendingMail} />
         </Container>
     );
 };
