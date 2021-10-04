@@ -2,6 +2,7 @@ import "./result.scss";
 import Send from '../../assets/icons/send.svg'
 
 import { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { Container } from 'react-bulma-components';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -18,6 +19,7 @@ function Result(props) {
     const [to_email, setEmail] = useState('');
 
     const [groupTest, setGroupTest] = useState(1);
+    let history = useHistory();
 
     useEffect(() => {
         setScore(props.score);
@@ -91,6 +93,7 @@ function Result(props) {
             })
             .then(function (response) {
                 console.log(response);
+                history.push('/index');
             })
             .catch(function (error) {
                 console.log(error);
