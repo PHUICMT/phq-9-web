@@ -38,7 +38,8 @@ let isChecked = [false, false, false, false, false, false, false, false, false];
 
 
 try {
-    QuestionnaireSenderService(questionnaire_uuid).then(result => (questionnaireRow = result.questionnaire));
+    QuestionnaireSenderService(questionnaire_uuid);
+    // .then(result => (questionnaireRow = result.questionnaire));
 } catch { }
 
 function getCurrentTime() {
@@ -321,12 +322,6 @@ const PHQTestComponent = () => {
                         value={email}
                         onChange={handleEmail}
                     />
-                    <Button
-                        onClick={() => handleOnSubmit()}
-                        variant="contained"
-                        size="large"
-                        className="submit-button"><img alt='Send' src={Send} />
-                    </Button>
                 </div>
             </Container>
         </div>

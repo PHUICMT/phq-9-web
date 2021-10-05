@@ -90,14 +90,14 @@ function Result(props) {
         const res = await axios
             .post("/select-to-process", json, {
                 headers: { "Content-Type": "application/json" },
-            })
-            .then(function (response) {
-                console.log(response);
-                history.push('/index');
-            })
-            .catch(function (error) {
-                console.log(error);
             });
+        // .then(function (response) {
+        //     console.log(response);
+        //     history.push('/index');
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
         return res;
     }
 
