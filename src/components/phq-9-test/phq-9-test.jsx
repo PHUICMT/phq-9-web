@@ -35,6 +35,7 @@ let behavior = ['', '', '', '', '', '', '', '', ''];
 let start_end_time = [-1, -1];
 
 let isChecked = [false, false, false, false, false, false, false, false, false];
+let emailFiled = false;
 
 
 try {
@@ -86,7 +87,7 @@ const PHQTestComponent = () => {
             data: video,
             processData: false,
             contentType: false,
-        }).done(function (data) {
+        }).done(function () {
             if (recordType.includes("webcam")) {
                 setIsLoading(false);
             }
@@ -275,6 +276,13 @@ const PHQTestComponent = () => {
 
     function handleEmail(e) {
         setEmail(e.target.value);
+        if (email != undefined) {
+            if (email.includes(".com") && email.includes("@")) {
+                emailFiled = true;
+            } else {
+                emailFiled = false;
+            }
+        }
     }
 
     return (
@@ -292,7 +300,17 @@ const PHQTestComponent = () => {
                 {TestComp(7, "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานท่ีต้องใช้ความตั้งใจ")}
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
-
+                <div className="email-container">
+                    <TextField
+                        className="email-text-container"
+                        id="outlined-basic"
+                        label="E-mail"
+                        variant="outlined"
+                        value={email}
+                        onChange={handleEmail}
+                    />
+                </div>
+                {isResultSubmit ? handleScrollToResult() : null}
                 {isResultSubmit ?
                     <Result
                         score={totalScore}
@@ -304,25 +322,14 @@ const PHQTestComponent = () => {
                         hoverTime={scopeTime}
                         behavior={behavior}
                     />
-
                     : <Button
-                        disabled={!(isChecked.every(bool => bool))}
+                        disabled={(!(isChecked.every(bool => bool)) && !emailFiled)}
                         variant="contained"
                         size="large"
                         className="submit-button"
                         onClick={() => handleOnSubmit()}
                     >ส่งคำตอบ</Button>
                 }
-                <div className="email-container">
-                    <TextField
-                        className="email-text-container"
-                        id="outlined-basic"
-                        label="E-mail"
-                        variant="outlined"
-                        value={email}
-                        onChange={handleEmail}
-                    />
-                </div>
             </Container>
         </div>
     );

@@ -87,18 +87,18 @@ function Result(props) {
             behavior: behavior,
             checkBox: groupTest,
         })
-        const res = await axios
+        return await axios
             .post("/select-to-process", json, {
                 headers: { "Content-Type": "application/json" },
+            })
+            .then(function (response) {
+                // history.push('/index');
+                console.log("[WEB] response");
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
             });
-        // .then(function (response) {
-        //     console.log(response);
-        //     history.push('/index');
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
-        return res;
     }
 
     return (
