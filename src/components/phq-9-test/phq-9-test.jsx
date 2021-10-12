@@ -1,5 +1,6 @@
 import "./phq-9-test.scss";
 import IndexBox from '../../assets/icons/index-box.svg'
+import Send from '../../assets/icons/send.svg'
 
 import Result from '../result/result'
 import PHQTitleCard from '../../components/phq-9-title-card/phq-9-title-card'
@@ -34,11 +35,12 @@ let behavior = ['', '', '', '', '', '', '', '', ''];
 let start_end_time = [-1, -1];
 
 let isChecked = [false, false, false, false, false, false, false, false, false];
-let questionnaireRow = 0;
+let emailFiled = false;
 
 
 try {
-    QuestionnaireSenderService(questionnaire_uuid).then(result => (questionnaireRow = result.questionnaire));
+    QuestionnaireSenderService(questionnaire_uuid);
+    // .then(result => (questionnaireRow = result.questionnaire));
 } catch { }
 
 function getCurrentTime() {
@@ -52,15 +54,14 @@ const PHQTestComponent = () => {
     const [isResultSubmit, setIsResultSubmit] = useState(false);
     const [totalScore, setTotalScore] = useState();
 
-    const [dataFromBackend, setDataFromBackend] = useState(null);
-
-
     const allowsRecord = useState(location.state)[0];
 
     const [isScreenRecord, setIsScreenRecord] = useState(false);
     const [isVideoRecord, setIsVideoRecord] = useState(false);
     const [streamWebcam, setStreamWebcam] = useState(null);
     const [streamScreen, setStreamScreen] = useState(null);
+
+    const [email, setEmail] = useState();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -86,9 +87,8 @@ const PHQTestComponent = () => {
             data: video,
             processData: false,
             contentType: false,
-        }).done(function (data) {
+        }).done(function () {
             if (recordType.includes("webcam")) {
-                setDataFromBackend(data);
                 setIsLoading(false);
             }
         });
@@ -274,6 +274,17 @@ const PHQTestComponent = () => {
         }
     }
 
+    function handleEmail(e) {
+        setEmail(e.target.value);
+        if (email != undefined) {
+            if (email.includes(".com") && email.includes("@")) {
+                emailFiled = true;
+            } else {
+                emailFiled = false;
+            }
+        }
+    }
+
     return (
         <div>
             <LoadingPopup open={isLoading} />
@@ -289,31 +300,36 @@ const PHQTestComponent = () => {
                 {TestComp(7, "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานท่ีต้องใช้ความตั้งใจ")}
                 {TestComp(8, "พูดหรือทำอะไรช้าจนคนอื่นมองเห็น หรือกระสับกระส่ายจนท่านอยู่ไม่นิ่งเหมือนเคย")}
                 {TestComp(9, "คิดทำร้ายตนเอง หรือคิดว่าถ้าตาย ๆ ไปเสียคงจะดี")}
-
-                {isResultSubmit && (dataFromBackend != null) ?
+                <div className="email-container">
+                    <TextField
+                        className="email-text-container"
+                        id="outlined-basic"
+                        label="E-mail"
+                        variant="outlined"
+                        value={email}
+                        onChange={handleEmail}
+                    />
+                </div>
+                {isResultSubmit ? handleScrollToResult() : null}
+                {isResultSubmit ?
                     <Result
                         score={totalScore}
-                        total_emotion={dataFromBackend.total_emotion}
-                        backend_start_end_time={dataFromBackend.start_end_time}
-                        total_emotion_time={dataFromBackend.total_emotion_time}
+                        uuid={questionnaire_uuid}
+                        to_email={email}
                         start_end_time={start_end_time}
-                        hoverTime={scopeTime}
                         fontEndTimeStamp={fontEndTimeStamp}
                         clickTime={clickTime}
-                        uuid={questionnaireRow}
+                        hoverTime={scopeTime}
                         behavior={behavior}
-                        questionnaire_uuid={questionnaire_uuid}
                     />
-
                     : <Button
-                        disabled={!(isChecked.every(bool => bool))}
+                        disabled={(!(isChecked.every(bool => bool)) && !emailFiled)}
                         variant="contained"
                         size="large"
                         className="submit-button"
                         onClick={() => handleOnSubmit()}
                     >ส่งคำตอบ</Button>
                 }
-                {(dataFromBackend != null) ? handleScrollToResult() : null}
             </Container>
         </div>
     );

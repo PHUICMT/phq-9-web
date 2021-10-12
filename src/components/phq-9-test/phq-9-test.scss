@@ -81,3 +81,25 @@
     background-color: #00d9aa;
   }
 }
+.email-container {
+  margin-top: 20px;
+
+  .MuiInputBase-root {
+    font-family: "Prompt", sans-serif;
+    margin-right: 10px;
+    border-radius: 30px;
+    color: #6c5ce7;
+    min-width: 300px;
+  }
+  .MuiInputLabel-outlined {
+    font-family: "Prompt", sans-serif;
+    color: #6c5ce7;
+    font-weight: 400;
+  }
+  .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #6c5ce7;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #6c5ce778;
+  }
+}
