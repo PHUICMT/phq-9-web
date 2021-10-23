@@ -91,10 +91,8 @@ function Result(props) {
             .post("/select-to-process", json, {
                 headers: { "Content-Type": "application/json" },
             })
-            .then(function (response) {
-                // history.push('/index');
-                console.log("[WEB] response");
-                console.log(response);
+            .then(function () {
+                history.push('/index');
             })
             .catch(function (error) {
                 console.log(error);
