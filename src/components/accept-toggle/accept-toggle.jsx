@@ -28,7 +28,7 @@ const AcceptToggle = () => {
         return (
             <Container className="container-box">
                 <div className="accept-toggle-container">
-                    <div className="accept-toggle-box">
+                    {/* <div className="accept-toggle-box">
                         <Toggle
                             defaultChecked={webcamToggleAllows}
                             className="custom-react-toggle"
@@ -36,7 +36,7 @@ const AcceptToggle = () => {
                         />
                         <h>เข้าถึงกล้อง Webcam และบันทึกวิดีโอ</h>
                         <img alt='webcam' src={webcamToggleAllows ? WebcamActive : WebcamDeActive} />
-                    </div>
+                    </div> */}
 
                     <div className="accept-toggle-box">
                         <Toggle
