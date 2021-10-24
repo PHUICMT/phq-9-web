@@ -37,12 +37,6 @@ let start_end_time = [-1, -1];
 let isChecked = [false, false, false, false, false, false, false, false, false];
 let emailFiled = false;
 
-
-try {
-    QuestionnaireSenderService(questionnaire_uuid);
-    // .then(result => (questionnaireRow = result.questionnaire));
-} catch { }
-
 function getCurrentTime() {
     var now = Math.round((new Date()).getTime());
     return now;
@@ -64,6 +58,14 @@ const PHQTestComponent = () => {
     const [email, setEmail] = useState();
 
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        try {
+            QuestionnaireSenderService(questionnaire_uuid);
+        } catch (e) {
+            console.error(e)
+        }
+    }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
