@@ -23,7 +23,7 @@ import moment from 'moment';
 
 import TextField from '@material-ui/core/TextField';
 
-const questionnaire_uuid = uuidv4();
+let questionnaire_uuid = null
 
 let clickTime = [null, null, null, null, null, null, null, null, null];
 let scopeTime = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -60,6 +60,7 @@ const PHQTestComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        questionnaire_uuid = uuidv4();
         try {
             QuestionnaireSenderService(questionnaire_uuid);
         } catch (e) {
