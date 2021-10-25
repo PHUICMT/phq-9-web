@@ -81,7 +81,7 @@ const PHQTestComponent = () => {
             }
         };
         var video = new FormData();
-        video.append("uuid", uuid);
+        video.append("uuid", questionnaire_uuid);
         video.append("blob", blob);
 
         return $.ajax({
@@ -94,6 +94,9 @@ const PHQTestComponent = () => {
             if (recordType.includes("webcam")) {
                 setIsLoading(false);
             }
+        }).catch(function (e) {
+            console.log(e);
+            setIsLoading(false);
         });
     };
 
