@@ -55,7 +55,7 @@ const PHQTestComponent = () => {
     const [streamWebcam, setStreamWebcam] = useState(null);
     const [streamScreen, setStreamScreen] = useState(null);
 
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState(null);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -279,12 +279,8 @@ const PHQTestComponent = () => {
 
     function handleEmail(e) {
         setEmail(e.target.value);
-        if (email != undefined) {
-            if (email.includes(".com") && email.includes("@")) {
-                emailFiled = true;
-            } else {
-                emailFiled = false;
-            }
+        if (e != undefined) {
+            emailFiled = e.target.value.includes(".com") && e.target.value.includes("@")
         }
     }
 
