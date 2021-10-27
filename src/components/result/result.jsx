@@ -132,7 +132,7 @@ function Result(props) {
                             onChange={handleRadioChange}
                             value={2}
                         />
-                        <h className={`${groupTest == 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มผู่ป่วยกำลังรักษา</h>
+                        <h className={`${groupTest == 2 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(2)}>กลุ่มผู้มีภาวะซึมเศร้า</h>
                     </div>
 
                     <div className="radio-box">
@@ -141,7 +141,7 @@ function Result(props) {
                             onChange={handleRadioChange}
                             value={3}
                         />
-                        <h className={`${groupTest == 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มผู้มีภาวะซึมเศร้า</h>
+                        <h className={`${groupTest == 3 ? 'checkedText' : ''} clickable`} onClick={() => setGroupTest(3)}>กลุ่มผู่ป่วยกำลังรักษา</h>
                     </div>
                 </div>
 
