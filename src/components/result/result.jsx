@@ -86,6 +86,8 @@ function Result(props) {
             reactionTime: hoverTime,
             behavior: behavior,
             checkBox: groupTest,
+            result: result['result'],
+            info: result['info'],
         })
         return await axios
             .post("/select-to-process", json, {
